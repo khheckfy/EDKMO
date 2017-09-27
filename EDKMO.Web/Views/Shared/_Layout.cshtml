@@ -1,0 +1,23 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - Календарь обучения</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundle/jquery")
+
+    @RenderSection("dxscripts", required: false)
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="container">
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundle/btsp")
+</body>
+</html>
