@@ -253,6 +253,11 @@
     <Content Include="Areas\Manage\Views\Users\_gridAdd.cshtml" />
     <Content Include="Areas\Manage\Views\Territories\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Users\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\EventTypes\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\EventTypes\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\EventTypes\_grid.cshtml" />
+    <Content Include="Areas\Manage\Views\EventTypes\_gridAdd.cshtml" />
+    <Content Include="Areas\Manage\Views\EventTypes\_gridButtons.cshtml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
@@ -308,6 +313,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Manage\Controllers\EventTypesController.cs" />
     <Compile Include="Areas\Manage\Controllers\TerritoriesController.cs" />
     <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />

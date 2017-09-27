@@ -19,9 +19,10 @@ namespace EDKMO.Web
 
             // регистрируем споставление типов
             builder.RegisterModule(new ServiceModule());
-            //builder.RegisterModule(new AutoMapperModule());
+            builder.RegisterModule(new AutoMapperModule());
             builder.RegisterType<TerritoriesService>().As<ITerritories>().AsSelf().InstancePerRequest();
             builder.RegisterType<UsersService>().As<IUsers>().AsSelf().InstancePerRequest();
+            builder.RegisterType<EventTypeService>().As<IEventTypeService>().AsSelf().InstancePerRequest();
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace EDKMO.BusinessLogic.Interfaces
 {
-    public interface ITerritories
+    public interface IEventTypeService
     {
         IQueryable Select();
-        Task<TerritoryDTO> Get(byte id);
-        Task Update(TerritoryDTO model);
+        Task<EventTypeDTO> Get(byte id);
+        Task Update(EventTypeDTO model);
+        Task Delete(byte id);
     }
 }

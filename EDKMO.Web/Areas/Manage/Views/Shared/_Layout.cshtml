@@ -18,10 +18,13 @@
 <h2>Администрирование</h2>
 <ul class="nav justify-content-center">
     <li class="nav-item">
-        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Users" ? "active" : "")" href="/Manage/Users/">Пользователи</a>
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Users" ? "active" : "text-muted")" href="/Manage/Users/">Пользователи</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Territories" ? "active" : "")" href="/Manage/Territories/">Территории</a>
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Territories" ? "active" : "text-muted")" href="/Manage/Territories/">Территории</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "EventTypes" ? "active" : "text-muted")" href="/Manage/EventTypes/">Типы событий</a>
     </li>
 </ul>
 @RenderBody()

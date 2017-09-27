@@ -1,0 +1,20 @@
+﻿@model EDKMO.BusinessLogic.DTO.EventTypeDTO
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@using (Html.BeginForm("Edit", Resources.Controllers.EventTypes, FormMethod.Post, new { id = "formid", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <label for="l1">Название</label>
+        <input type="text" class="form-control" id="l1" placeholder="Введите тип события" name="Name" value="@Model.Name">
+    </div>
+    <div class="form-group">
+        <label for="l2">Цвет</label>
+        <input type="color" id="l2" aria-describedby="emailHelp" value="@Model.Color" name="Color">
+        <small id="emailHelp" class="form-text text-muted">Формат HEX</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <input type="hidden" name="EventTypeId" value="@Model.EventTypeId" />
+}

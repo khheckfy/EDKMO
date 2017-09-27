@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EDKMO.BusinessLogic.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,8 @@ namespace EDKMO.BusinessLogic.Interfaces
     public interface IUsers
     {
         IQueryable Select();
+        Task<UserDTO> Get(byte id);
+        Task Update(UserDTO model);
+        Task Delete(byte id);
     }
 }

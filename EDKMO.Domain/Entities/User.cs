@@ -8,7 +8,7 @@ namespace EDKMO.Domain.Entities
     [Table("Users")]
     public class User
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte UserId { set; get; }
         [StringLength(20)]
         public string DomainName { set; get; }

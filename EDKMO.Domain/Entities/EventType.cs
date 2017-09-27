@@ -7,7 +7,7 @@ namespace EDKMO.Domain.Entities
     [Table("EventTypes")]
     public class EventType
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte EventTypeId { set; get; }
         [StringLength(50)]
         public string Name { set; get; }

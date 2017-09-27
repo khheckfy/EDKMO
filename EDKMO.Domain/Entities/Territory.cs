@@ -7,7 +7,7 @@ namespace EDKMO.Domain.Entities
     [Table("Territories")]
     public class Territory
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte TerritoryId { set; get; }
         [StringLength(5)]
         public string Name { set; get; }

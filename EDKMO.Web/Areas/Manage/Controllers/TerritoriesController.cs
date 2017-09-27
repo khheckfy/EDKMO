@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EDKMO.BusinessLogic.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,10 +30,21 @@ namespace EDKMO.Web.Areas.Manage.Controllers
             return PartialView(Resources.GridPartialPath.Users);
         }
 
-        public async Task<ActionResult> Edit(int? id)
+        [HttpGet]
+        public async Task<ActionResult> Edit(byte? id)
         {
-            await Task.FromResult(0);
-            return View();
+            TerritoryDTO model = new TerritoryDTO();
+            if (id.HasValue)
+                model = await TerritoryService.Get(id.Value);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(TerritoryDTO model)
+        {
+            await TerritoryService.Update(model);
+            return RedirectToAction("Index");
         }
     }
 }

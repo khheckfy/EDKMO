@@ -61,6 +61,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/EventTypes/_grid.cshtml.
+        /// </summary>
+        internal static string EventTypes {
+            get {
+                return ResourceManager.GetString("EventTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/EventTypes/_gridAdd.cshtml.
+        /// </summary>
+        internal static string EventTypesAdd {
+            get {
+                return ResourceManager.GetString("EventTypesAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/EventTypes/_gridButtons.cshtml.
+        /// </summary>
+        internal static string EventTypesButtons {
+            get {
+                return ResourceManager.GetString("EventTypesButtons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_grid.cshtml.
         /// </summary>
         internal static string Territories {
