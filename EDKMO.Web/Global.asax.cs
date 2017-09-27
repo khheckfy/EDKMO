@@ -19,6 +19,7 @@ namespace EDKMO.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(System.Web.Optimization.BundleTable.Bundles);
+            AutofacConfig.ConfigureContainer();
         }
     }
 }

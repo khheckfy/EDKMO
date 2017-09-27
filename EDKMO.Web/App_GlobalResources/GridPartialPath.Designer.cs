@@ -59,5 +59,59 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_grid.cshtml.
+        /// </summary>
+        internal static string Territories {
+            get {
+                return ResourceManager.GetString("Territories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_gridAdd.cshtml.
+        /// </summary>
+        internal static string TerritoriesAdd {
+            get {
+                return ResourceManager.GetString("TerritoriesAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_gridButtons.cshtml.
+        /// </summary>
+        internal static string TerritoryButtons {
+            get {
+                return ResourceManager.GetString("TerritoryButtons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Users/_gridButtons.cshtml.
+        /// </summary>
+        internal static string UserButtons {
+            get {
+                return ResourceManager.GetString("UserButtons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Users/_grid.cshtml.
+        /// </summary>
+        internal static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/Users/_gridAdd.cshtml.
+        /// </summary>
+        internal static string UsersAdd {
+            get {
+                return ResourceManager.GetString("UsersAdd", resourceCulture);
+            }
+        }
     }
 }

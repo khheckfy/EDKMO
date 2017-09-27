@@ -59,5 +59,23 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TerritoriesSelectPartial.
+        /// </summary>
+        internal static string TerritoriesSelect {
+            get {
+                return ResourceManager.GetString("TerritoriesSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UsersSelectPartial.
+        /// </summary>
+        internal static string UsersSelect {
+            get {
+                return ResourceManager.GetString("UsersSelect", resourceCulture);
+            }
+        }
     }
 }

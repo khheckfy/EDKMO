@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section dxscripts{
+    @Scripts.Render("~/bundle/dGis")
+    @Html.DevExpress().GetScripts(
+                new Script { ExtensionSuite = ExtensionSuite.GridView, ExtensionType = ExtensionType.GridView },
+                new Script { ExtensionType = ExtensionType.WebDocumentViewer }
+    )
+    @Html.DevExpress().GetStyleSheets(
+                       new StyleSheet { ExtensionSuite = ExtensionSuite.GridView, ExtensionType = ExtensionType.GridView },
+                       new StyleSheet { ExtensionType = ExtensionType.WebDocumentViewer }
+    )
+
+}
+
+<h2>Администрирование</h2>
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a class="nav-link" href="/Manage/Users/">Пользователи</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/Manage/Territories/">Территории</a>
+    </li>
+</ul>
+@RenderBody()

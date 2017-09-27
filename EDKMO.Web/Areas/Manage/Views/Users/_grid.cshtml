@@ -1,0 +1,33 @@
+﻿@{Html.DevExpress().GridView(
+                  settings =>
+                  {
+                      settings.CallbackRouteValues = new { Controller = Resources.Controllers.Users, Action = Resources.GridActions.UsersSelect };
+
+                      settings.KeyFieldName = "UserId";
+                      settings.Name = "grid";
+                      settings.SettingsBehavior.EnableRowHotTrack = true;
+                      settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
+                      settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                      settings.SettingsPager.PageSize = 100;
+
+                      settings.Columns.Add("Name", "Название");
+                      settings.Columns.Add(
+                         column =>
+                         {
+                             column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+                             column.SetDataItemTemplateContent(c =>
+                             {
+                                 Html.RenderPartial(Resources.GridPartialPath.UserButtons, c.KeyValue);
+                             });
+                             column.SetHeaderCaptionTemplateContent(c =>
+                                 {
+                                     Html.RenderPartial(Resources.GridPartialPath.UsersAdd);
+                                 });
+                         });
+                  })
+                  .BindToLINQ(string.Empty, string.Empty, (s, e) =>
+                  {
+                      e.QueryableSource = ViewBag.Query;
+                      e.KeyExpression = "UserId";
+                  }).GetHtml();
+}

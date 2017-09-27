@@ -59,5 +59,23 @@ namespace Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Territories.
+        /// </summary>
+        internal static string Territories {
+            get {
+                return ResourceManager.GetString("Territories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users.
+        /// </summary>
+        internal static string Users {
+            get {
+                return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
     }
 }
