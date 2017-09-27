@@ -32,6 +32,22 @@ namespace EDKMO.BusinessLogic.Services
 
         public async Task Update(UserDTO model)
         {
+            User obj = new User();
+            if (model.UserId > 0)
+                obj = await DB.UserRepository.FindByIdAsync(model.TerritoryId);
+
+            obj.DomainName = model.DomainName;
+            obj.LastName = model.LastName;
+            obj.FirstName = model.FirstName;
+            obj.MiddleName = model.MiddleName;
+            obj.StartWork = model.StartWork;
+            obj.EndWork = model.EndWork;
+            obj.IsDisabled = model.IsDisabled;
+            obj.TerritoryId = model.TerritoryId;
+
+            if (model.UserId == 0)
+                DB.UserRepository.Add(obj);
+
             await DB.SaveChangesAsync();
         }
 

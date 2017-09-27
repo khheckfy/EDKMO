@@ -2,6 +2,7 @@ namespace EDKMO.Data.EntityFramework
 {
     using Domain.Entities;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public class Model : DbContext
     {
@@ -23,14 +24,9 @@ namespace EDKMO.Data.EntityFramework
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<User>()
-            .HasRequired(c => c.Territory)
-            .WithMany()
-            .WillCascadeOnDelete(false);
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

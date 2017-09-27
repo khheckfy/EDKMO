@@ -10,7 +10,14 @@
                       settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
                       settings.SettingsPager.PageSize = 100;
 
-                      settings.Columns.Add("Name", "Название").Width = System.Web.UI.WebControls.Unit.Pixel(50);
+                      settings.Columns.Add("LastName", "Фамилия");
+                      settings.Columns.Add("FirstName", "Имя");
+                      settings.Columns.Add("MiddleName", "Отчество");
+                      settings.Columns.Add("DomainName", "Логин");
+                      settings.Columns.Add("StartWork", "Начало работы", MVCxGridViewColumnType.TimeEdit);
+                      settings.Columns.Add("EndWork", "Окончание работы", MVCxGridViewColumnType.TimeEdit);
+                      settings.Columns.Add("IsDisabled", "Блок", MVCxGridViewColumnType.CheckBox);
+
                       settings.Columns.Add(
                          column =>
                          {

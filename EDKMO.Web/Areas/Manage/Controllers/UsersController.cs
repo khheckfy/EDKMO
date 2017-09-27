@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EDKMO.BusinessLogic.DTO;
+using EDKMO.BusinessLogic.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +11,13 @@ namespace EDKMO.Web.Areas.Manage.Controllers
 {
     public class UsersController : Controller
     {
-        BusinessLogic.Interfaces.IUsers UserService;
+        IUsers UserService;
+        ITerritories TerritoryService;
 
-        public UsersController(BusinessLogic.Interfaces.IUsers userService)
+        public UsersController(IUsers userService, ITerritories territoryService)
         {
             UserService = userService;
+            TerritoryService = territoryService;
         }
 
         // GET: Manage/Users
@@ -29,10 +33,22 @@ namespace EDKMO.Web.Areas.Manage.Controllers
             return PartialView(Resources.GridPartialPath.Users);
         }
 
-        public async Task<ActionResult> Edit(int? id)
+        [HttpGet]
+        public async Task<ActionResult> Edit(byte? id)
         {
-            await Task.FromResult(0);
-            return View();
+            ViewBag.territories = await TerritoryService.GetAll();
+            UserDTO model = new UserDTO();
+            if (id.HasValue)
+                model = await UserService.Get(id.Value);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(UserDTO model)
+        {
+            await UserService.Update(model);
+            return RedirectToAction("Index");
         }
     }
 }

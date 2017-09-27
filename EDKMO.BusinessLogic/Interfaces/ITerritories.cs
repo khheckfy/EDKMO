@@ -12,5 +12,6 @@ namespace EDKMO.BusinessLogic.Interfaces
         IQueryable Select();
         Task<TerritoryDTO> Get(byte id);
         Task Update(TerritoryDTO model);
+        Task<List<TerritoryDTO>> GetAll();
     }
 }

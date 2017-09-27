@@ -1,4 +1,57 @@
-﻿
+﻿@model EDKMO.BusinessLogic.DTO.UserDTO
+
 @{
     ViewBag.Title = "МО";
+}
+@using (Html.BeginForm("Edit", Resources.Controllers.Users, FormMethod.Post, new { id = "formid", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        <label for="l1">Фамилия</label>
+        <input type="text" class="form-control" id="l1" placeholder="Введите фамилия" name="LastName" value="@Model.LastName">
+    </div>
+    <div class="form-group">
+        <label for="q1">Имя</label>
+        <input type="text" class="form-control" id="q1" placeholder="Введите имя" name="FirstName" value="@Model.FirstName">
+    </div>
+    <div class="form-group">
+        <label for="q2">Отчество</label>
+        <input type="text" class="form-control" id="q2" placeholder="Введите отчество" name="MiddleName" value="@Model.MiddleName">
+    </div>
+    <div class="form-group">
+        <label for="q3">Логин</label>
+        <input type="text" class="form-control" aria-describedby="emailHelp" id="q3" placeholder="Введите логин" name="DomainName" value="@Model.DomainName">
+        <small id="emailHelp" class="form-text text-muted">Формат alventa\abc</small>
+    </div>
+    <div class="form-group">
+        <label for="q4">Территория</label>
+        <select id="q4" class="form-control" name="TerritoryId">
+            @foreach (EDKMO.BusinessLogic.DTO.TerritoryDTO t in ViewBag.territories)
+            {
+                if (t.TerritoryId == Model.TerritoryId)
+                {
+                    <option value="@t.TerritoryId" selected="selected">@t.Name</option>
+                }
+                else
+                {
+                    <option value="@t.TerritoryId">@t.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="q5">Время начала работы</label>
+        <input type="time" class="form-control" id="q5" name="StartWork" value="@Model.StartWork">
+    </div>
+    <div class="form-group">
+        <label for="q6">Время окончания работы</label>
+        <input type="time" class="form-control" id="q6" name="EndWork" value="@Model.EndWork">
+    </div>
+    <div class="form-check">
+        <label class="form-check-label">
+            @Html.EditorFor(x => x.IsDisabled, new { @class = "form-check-input" })
+            Заблокирован
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <input type="hidden" value="@Model.UserId" name="UserId" />
 }

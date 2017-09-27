@@ -19,6 +19,12 @@ namespace EDKMO.BusinessLogic.Services
             DB = db;
         }
 
+        public async Task<List<TerritoryDTO>> GetAll()
+        {
+            var data = await DB.TerritoryRepository.GetAllAsync();
+            return Mapper.Map<List<Territory>, List<TerritoryDTO>>(data);
+        }
+
         public IQueryable Select()
         {
             return DB.TerritoryRepository.Query();
@@ -44,7 +50,6 @@ namespace EDKMO.BusinessLogic.Services
                 DB.TerritoryRepository.Add(obj);
 
             await DB.SaveChangesAsync();
-            
         }
     }
 }
