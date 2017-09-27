@@ -29,7 +29,8 @@ namespace EDKMO.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                    "~/Content/bootstrap.css",
                    "~/Content/nprogress.css",
-                   "~/Content/font-awesome.css"
+                   "~/Content/font-awesome.css",
+                   "~/Content/Site.css"
                    ));
         }
     }

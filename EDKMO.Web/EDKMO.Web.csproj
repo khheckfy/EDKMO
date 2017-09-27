@@ -251,6 +251,8 @@
     <Content Include="Areas\Manage\Views\Users\_gridButtons.cshtml" />
     <Content Include="Areas\Manage\Views\Territories\_gridAdd.cshtml" />
     <Content Include="Areas\Manage\Views\Users\_gridAdd.cshtml" />
+    <Content Include="Areas\Manage\Views\Territories\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Users\Edit.cshtml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />

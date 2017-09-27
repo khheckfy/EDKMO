@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -26,6 +27,12 @@ namespace EDKMO.Web.Areas.Manage.Controllers
         {
             ViewBag.Query = UserService.Select();
             return PartialView(Resources.GridPartialPath.Users);
+        }
+
+        public async Task<ActionResult> Edit(int? id)
+        {
+            await Task.FromResult(0);
+            return View();
         }
     }
 }

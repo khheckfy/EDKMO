@@ -18,10 +18,10 @@
 <h2>Администрирование</h2>
 <ul class="nav justify-content-center">
     <li class="nav-item">
-        <a class="nav-link" href="/Manage/Users/">Пользователи</a>
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Users" ? "active" : "")" href="/Manage/Users/">Пользователи</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/Manage/Territories/">Территории</a>
+        <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Territories" ? "active" : "")" href="/Manage/Territories/">Территории</a>
     </li>
 </ul>
 @RenderBody()
