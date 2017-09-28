@@ -34,7 +34,7 @@ namespace EDKMO.BusinessLogic.Services
         {
             User obj = new User();
             if (model.UserId > 0)
-                obj = await DB.UserRepository.FindByIdAsync(model.TerritoryId);
+                obj = await DB.UserRepository.FindByIdAsync(model.UserId);
 
             obj.DomainName = model.DomainName;
             obj.LastName = model.LastName;

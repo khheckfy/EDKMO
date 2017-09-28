@@ -19,8 +19,8 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -258,6 +258,7 @@
     <Content Include="Areas\Manage\Views\EventTypes\_grid.cshtml" />
     <Content Include="Areas\Manage\Views\EventTypes\_gridAdd.cshtml" />
     <Content Include="Areas\Manage\Views\EventTypes\_gridButtons.cshtml" />
+    <None Include="Properties\PublishProfiles\pbs.pubxml" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
@@ -317,10 +318,12 @@
     <Compile Include="Areas\Manage\Controllers\TerritoriesController.cs" />
     <Compile Include="Areas\Manage\Controllers\UsersController.cs" />
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
+    <Compile Include="Controllers\EventSelectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\EventSelectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +334,8 @@
     </Content>
     <Content Include="scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\EventSelect\Index.cshtml" />
+    <Content Include="Views\EventSelect\_dayPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -341,7 +346,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Manage\Models\" />
-    <Folder Include="Models\" />
+    <Folder Include="Views\Events\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EDKMO.BusinessLogic\EDKMO.BusinessLogic.csproj">

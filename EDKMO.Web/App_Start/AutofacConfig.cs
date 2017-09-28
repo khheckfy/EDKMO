@@ -21,6 +21,7 @@ namespace EDKMO.Web
             builder.RegisterModule(new ServiceModule());
             builder.RegisterModule(new AutoMapperModule());
             builder.RegisterType<TerritoriesService>().As<ITerritories>().AsSelf().InstancePerRequest();
+            builder.RegisterType<EventService>().As<IEventService>().AsSelf().InstancePerRequest();
             builder.RegisterType<UsersService>().As<IUsers>().AsSelf().InstancePerRequest();
             builder.RegisterType<EventTypeService>().As<IEventTypeService>().AsSelf().InstancePerRequest();
 

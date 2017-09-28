@@ -21,7 +21,7 @@
                       settings.Columns.Add(
                          column =>
                          {
-                             column.Width = System.Web.UI.WebControls.Unit.Pixel(40);
+                             column.Width = System.Web.UI.WebControls.Unit.Percentage(1);
                              column.SetDataItemTemplateContent(c =>
                              {
                                  Html.RenderPartial(Resources.GridPartialPath.UserButtons, c.KeyValue);

@@ -80,15 +80,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessModels\EventPlaningItem.cs" />
     <Compile Include="DTO\EventTypeDTO.cs" />
     <Compile Include="DTO\TerritoryDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Infrastructure\AutoMapperModule.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
+    <Compile Include="Interfaces\IEventService.cs" />
     <Compile Include="Interfaces\IEventTypeService.cs" />
     <Compile Include="Interfaces\ITerritories.cs" />
     <Compile Include="Interfaces\IUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\EventTypeService.cs" />
     <Compile Include="Services\TerritoriesService.cs" />
     <Compile Include="Services\UsersService.cs" />

@@ -27,7 +27,7 @@ namespace EDKMO.Web.Areas.Manage.Controllers
         public ActionResult TerritoriesSelectPartial()
         {
             ViewBag.Query = TerritoryService.Select();
-            return PartialView(Resources.GridPartialPath.Users);
+            return PartialView(Resources.GridPartialPath.Territories);
         }
 
         [HttpGet]

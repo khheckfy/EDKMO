@@ -1,0 +1,46 @@
+﻿@model List<EDKMO.BusinessLogic.BusinessModels.EventPlaningItem>
+<tr>
+        @switch (Model[0].Date.DayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                {
+                    <td>Пн</td>
+                }
+                break;
+            case DayOfWeek.Friday:
+                {
+                    <td>Пт</td>
+                }
+                break;
+            case DayOfWeek.Thursday:
+                {
+                    <td>Чт</td>
+                }
+                break;
+            case DayOfWeek.Wednesday:
+                {
+                    <td>Ср</td>
+                }
+                break;
+            case DayOfWeek.Tuesday:
+                {
+                    <td>Вт</td>
+                }
+                break;
+        }
+    @foreach (var date in Model)
+    {
+                        if (date.IsFree)
+                        {
+            <td>
+                <a class="fa fa-plus text-success" href="#"></a>
+            </td>
+        }
+        else
+        {
+            <td>
+                <span class="fa fa-remove text-muted disabled"></span>
+            </td>
+        }
+    }
+</tr>

@@ -1,0 +1,29 @@
+﻿@model  EDKMO.Web.Models.EventSelectModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table table-bordered table-sm text-center table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            @{
+                foreach (TimeSpan time in Model.HeaderTimes)
+                {
+                    <td>
+                        @time.ToString(@"hh\:mm")
+                    </td>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Monday).ToList());
+            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Tuesday).ToList());
+            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Wednesday).ToList());
+            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Thursday).ToList());
+            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Friday).ToList());
+        }
+    </tbody>
+</table>
