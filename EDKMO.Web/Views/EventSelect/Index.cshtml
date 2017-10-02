@@ -81,7 +81,7 @@ else if (Model.IsSuccess)
                     if (e == null)
                     {
                         <td>
-                            <a href="#" onclick="setNew(@user.UserId,'@user.LastName', '@date.ToString()')" class="text-success fa fa-plus" title="Заблокировать"></a>
+                            <a href="#" onclick="setNew(@user.UserId,'@user.LastName', '@date.ToString()', '@t', '@user.DomainName')" class="text-success fa fa-plus" title="Заблокировать"></a>
                         </td>
                     }
                     else
@@ -106,10 +106,12 @@ else if (Model.IsSuccess)
 
 @section scriptsbottom{
     <script type="text/javascript">
-        function setNew(trenerId, trenerName, time) {
+        function setNew(trenerId, trenerName, time, t, user) {
             $('[name="UserName"]').val(trenerName);
             $('[name="UserId"]').val(trenerId);
             $('[name="StartDate"]').val(time);
+            var addressLookup = { time: t, name: trenerName, user: user };
+            parent.postMessage(JSON.stringify(addressLookup), "*");
         }
 
         $(function () {
