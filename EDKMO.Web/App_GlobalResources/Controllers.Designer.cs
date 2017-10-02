@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EventSelect.
+        /// </summary>
+        internal static string EventSelect {
+            get {
+                return ResourceManager.GetString("EventSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EventTypes.
         /// </summary>
         internal static string EventTypes {

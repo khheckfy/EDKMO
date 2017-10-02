@@ -1,29 +1,119 @@
 ﻿@model  EDKMO.Web.Models.EventSelectModel
-@{
-    ViewBag.Title = "Index";
+<style type="text/css">
+    body {
+        font-size: 0.7rem;
+    }
+</style>
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Внимание!</strong> @Model.Error
+    </div>
 }
-
+else if (Model.IsSuccess)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Создано!</strong> Событие успешно создано в календаре
+    </div>
+}
 <table class="table table-bordered table-sm text-center table-hover">
     <thead>
-        <tr>
+        <tr class="table-secondary">
             <th></th>
-            @{
-                foreach (TimeSpan time in Model.HeaderTimes)
-                {
-                    <td>
-                        @time.ToString(@"hh\:mm")
-                    </td>
-                }
+            @foreach (var user in Model.Users)
+            {
+                <td title="@string.Format("{0} {1} {2}", user.LastName, user.FirstName, user.MiddleName)">
+                    @user.LastName
+                </td>
             }
         </tr>
     </thead>
     <tbody>
-        @{
-            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Monday).ToList());
-            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Tuesday).ToList());
-            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Wednesday).ToList());
-            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Thursday).ToList());
-            Html.RenderPartial("_dayPartial", Model.DateTimes.Where(n => n.Date.DayOfWeek == DayOfWeek.Friday).ToList());
+        @foreach (TimeSpan t in Model.Hours)
+        {
+            DateTime date = Model.Date.Add(t);
+            TimeSpan tsFrom = date.TimeOfDay.Add(TimeSpan.FromHours(Model.Territory.UTCHours * (-1)));
+            TimeSpan tsTo = tsFrom.Add(TimeSpan.FromMinutes(30));
+
+            <tr>
+                <td class="table-secondary">@date.ToString(@"HH/:mm")</td>
+
+                @foreach (var user in Model.Users)
+                {
+                    if (user.StartWork > t || user.EndWork < t)
+                    {
+                        <td>
+                            <span class="fa fa-ban text-muted"></span>
+                        </td>
+                        continue;
+                    }
+
+                    var e = Model
+                        .Events
+                        .FirstOrDefault(n => n.UserId == user.UserId && n.StartDate.TimeOfDay >= tsFrom && n.EndDate.TimeOfDay <= tsTo);
+                    if (e == null)
+                    {
+                        e = Model
+                              .Events
+                              .FirstOrDefault(n => n.UserId == user.UserId && n.StartDate.TimeOfDay <= tsFrom && n.EndDate.TimeOfDay <= tsTo && tsTo > n.StartDate.TimeOfDay && n.EndDate.TimeOfDay > tsFrom);
+                    }
+                    if (e == null)
+                    {
+                        e = Model
+                              .Events
+                              .FirstOrDefault(n => n.UserId == user.UserId && n.StartDate.TimeOfDay >= tsFrom && n.EndDate.TimeOfDay >= tsTo && n.StartDate.TimeOfDay < tsTo);
+                    }
+
+                    if (e == null)
+                    {
+                        e = Model
+                              .Events
+                              .FirstOrDefault(n => n.UserId == user.UserId && n.StartDate.TimeOfDay < tsFrom && n.EndDate.TimeOfDay >= tsTo);
+                    }
+
+
+                    if (e == null)
+                    {
+                        <td>
+                            <a href="#" onclick="setNew(@user.UserId,'@user.LastName', '@date.ToString()')" class="text-success fa fa-plus" title="Заблокировать"></a>
+                        </td>
+                    }
+                    else
+                    {
+                        string toolTip = string.Format("<em>{0}</em> <u>{1}</u> <b>{2}</b>", e.EventName, e.ShortDescription, e.LongDescription).Replace("\"", string.Empty);
+
+                        <td style="background-color:@e.EventColor">
+                            <span class="fa fa-@e.FaIcon"></span>
+                            <span class="" data-toggle="tooltip" data-html="true" data-placement="top" title="@toolTip">@e.RefEventName</span>
+                        </td>
+                    }
+
+                }
+            </tr>
         }
     </tbody>
 </table>
+
+@{
+    Html.RenderPartial("Form", Model.Event);
+}
+
+@section scriptsbottom{
+    <script type="text/javascript">
+        function setNew(trenerId, trenerName, time) {
+            $('[name="UserName"]').val(trenerName);
+            $('[name="UserId"]').val(trenerId);
+            $('[name="StartDate"]').val(time);
+        }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+}

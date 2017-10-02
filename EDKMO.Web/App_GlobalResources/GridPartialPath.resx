@@ -126,6 +126,9 @@
   <data name="EventTypesButtons" xml:space="preserve">
     <value>~/Areas/Manage/Views/EventTypes/_gridButtons.cshtml</value>
   </data>
+  <data name="FaIcon" xml:space="preserve">
+    <value>~/Areas/Manage/Views/EventTypes/_gridFaIcon.cshtml</value>
+  </data>
   <data name="Territories" xml:space="preserve">
     <value>~/Areas/Manage/Views/Territories/_grid.cshtml</value>
   </data>

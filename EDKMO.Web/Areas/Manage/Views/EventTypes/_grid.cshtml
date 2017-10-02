@@ -1,34 +1,45 @@
 ﻿@{Html.DevExpress().GridView(
-  settings =>
-  {
-      settings.CallbackRouteValues = new { Controller = Resources.Controllers.EventTypes, Action = Resources.GridActions.EventTypesSelect };
+                      settings =>
+                      {
+                          settings.CallbackRouteValues = new { Controller = Resources.Controllers.EventTypes, Action = Resources.GridActions.EventTypesSelect };
 
-      settings.KeyFieldName = "EventTypeId";
-      settings.Name = "grid";
-      settings.SettingsBehavior.EnableRowHotTrack = true;
-      settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
-      settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-      settings.SettingsPager.PageSize = 100;
+                          settings.KeyFieldName = "EventTypeId";
+                          settings.Name = "grid";
+                          settings.SettingsBehavior.EnableRowHotTrack = true;
+                          settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
+                          settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+                          settings.SettingsPager.PageSize = 100;
 
-      settings.Columns.Add("Name", "Название");
-      settings.Columns.Add("Color", "Цвет").Width = System.Web.UI.WebControls.Unit.Percentage(1); 
-      settings.Columns.Add(
-          column =>
-          {
-              column.Width = System.Web.UI.WebControls.Unit.Percentage(1);
-              column.SetDataItemTemplateContent(c =>
-              {
-                  Html.RenderPartial(Resources.GridPartialPath.EventTypesButtons, c.KeyValue);
-              });
-              column.SetHeaderCaptionTemplateContent(c =>
-              {
-                  Html.RenderPartial(Resources.GridPartialPath.EventTypesAdd);
-              });
-          });
-  })
-  .BindToLINQ(string.Empty, string.Empty, (s, e) =>
-  {
-      e.QueryableSource = ViewBag.Query;
-      e.KeyExpression = "EventTypeId";
-  }).GetHtml();
+                          settings.Columns.Add("Name", "Название");
+                          settings.Columns.Add("Color", "Цвет").Width = System.Web.UI.WebControls.Unit.Percentage(1);
+                          settings.Columns.Add(
+                              column =>
+                              {
+                                  column.Caption = "Иконка";
+                                  column.FieldName = "FaIcon";
+                                  column.Width = System.Web.UI.WebControls.Unit.Percentage(1);
+                                  column.SetDataItemTemplateContent(c =>
+                                  {
+                                      Html.RenderPartial(Resources.GridPartialPath.FaIcon, DataBinder.Eval(c.DataItem, "FaIcon"));
+                                  });
+                              });
+                          settings.Columns.Add(
+                          column =>
+                          {
+                              column.Width = System.Web.UI.WebControls.Unit.Percentage(1);
+                              column.SetDataItemTemplateContent(c =>
+                              {
+                                  Html.RenderPartial(Resources.GridPartialPath.EventTypesButtons, c.KeyValue);
+                              });
+                              column.SetHeaderCaptionTemplateContent(c =>
+                              {
+                                  Html.RenderPartial(Resources.GridPartialPath.EventTypesAdd);
+                              });
+                          });
+                      })
+                .BindToLINQ(string.Empty, string.Empty, (s, e) =>
+                {
+                    e.QueryableSource = ViewBag.Query;
+                    e.KeyExpression = "EventTypeId";
+                }).GetHtml();
 }

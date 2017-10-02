@@ -3,6 +3,7 @@ using EDKMO.BusinessLogic.DTO;
 using EDKMO.BusinessLogic.Interfaces;
 using EDKMO.Domain;
 using EDKMO.Domain.Entities;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,12 @@ namespace EDKMO.BusinessLogic.Services
         public EventTypeService(IUnitOfWork db)
         {
             DB = db;
+        }
+
+        public async Task<List<EventTypeDTO>> ListAll()
+        {
+            var data = await DB.EventTypeRepository.GetAllAsync();
+            return Mapper.Map<List<EventType>, List<EventTypeDTO>>(data);
         }
 
         public IQueryable Select()
@@ -36,6 +43,7 @@ namespace EDKMO.BusinessLogic.Services
 
             obj.Name = model.Name;
             obj.Color = model.Color;
+            obj.FaIcon = model.FaIcon;
 
             if (model.EventTypeId == 0)
                 DB.EventTypeRepository.Add(obj);

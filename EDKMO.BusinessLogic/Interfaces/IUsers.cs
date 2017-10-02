@@ -10,6 +10,7 @@ namespace EDKMO.BusinessLogic.Interfaces
     public interface IUsers
     {
         IQueryable Select();
+        Task<List<UserDTO>> ListActive();
         Task<UserDTO> Get(byte id);
         Task Update(UserDTO model);
         Task Delete(byte id);

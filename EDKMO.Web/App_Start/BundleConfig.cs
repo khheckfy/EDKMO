@@ -22,7 +22,8 @@ namespace EDKMO.Web
 
               "~/Scripts/nprogress.js",
               "~/Scripts/holder.min.js",
-              "~/Scripts/popper.js",
+              //"~/Scripts/popper.js",
+              "~/Scripts/umd/popper.js",
               "~/Scripts/bootstrap.js"
                         ));
 

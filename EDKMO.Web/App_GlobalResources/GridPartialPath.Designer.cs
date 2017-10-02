@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Areas/Manage/Views/EventTypes/_gridFaIcon.cshtml.
+        /// </summary>
+        internal static string FaIcon {
+            get {
+                return ResourceManager.GetString("FaIcon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_grid.cshtml.
         /// </summary>
         internal static string Territories {

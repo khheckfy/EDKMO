@@ -1,0 +1,59 @@
+﻿@using EDKMO.BusinessLogic.DTO
+@using EDKMO.BusinessLogic.BusinessModels
+
+@model EventDTO
+
+@using (Html.BeginForm("Index", Resources.Controllers.EventSelect, FormMethod.Post, new { id = "formid", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.TerritoryId);
+    @Html.HiddenFor(model => model.UserId);
+    @Html.HiddenFor(model => model.EventName);
+    @Html.HiddenFor(model => model.ReportMoId);
+    @Html.HiddenFor(model => model.AccountId);
+   
+    <table>
+        <tr>
+            <td>Тренер</td>
+            <td>@Html.TextBoxFor(model => model.UserName, new { @class = "w-100", @readonly= "readonly" })</td>
+            <td>Тип</td>
+            <td>
+                <select id="q4" class="w-100" name="EventTypeId">
+                    @foreach (EventTypeDTO t in ViewBag.EventTypes)
+                    {
+                        if (t.EventTypeId == Model.EventTypeId)
+                        {
+                            <option value="@t.EventTypeId" selected="selected">@t.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@t.EventTypeId">@t.Name</option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Дата</td>
+            <td>@Html.TextBoxFor(model => model.StartDate, new { @class = "w-100", @readonly = "readonly" })</td>
+            <td>Длительность</td>
+            <td>@Html.TextBoxFor(model => model.EventDuration, new { @class = "w-100", @type = "time" })</td>
+        </tr>
+        <tr>
+            <td>Дорога туда</td>
+            <td>@Html.TextBoxFor(model => model.RoadTo, new { @class = "w-100", @type = "time" })</td>
+            <td>Обратно</td>
+            <td>@Html.TextBoxFor(model => model.RoadAfter, new { @class = "w-100", @type = "time" })</td>
+        </tr>
+        <tr>
+            <td>Комментарий кратко</td>
+            <td colspan="3">@Html.TextBoxFor(model => model.ShortDescription, new { @class = "w-100" })</td>
+        </tr>
+        <tr>
+            <td colspan="4">Комментарий</td>
+        </tr>
+        <tr>
+            <td colspan="4">@Html.TextAreaFor(model => model.LongDescription, new { @class = "w-100" })</td>
+        </tr>
+    </table>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+}

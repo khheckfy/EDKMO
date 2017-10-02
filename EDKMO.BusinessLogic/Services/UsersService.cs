@@ -30,6 +30,12 @@ namespace EDKMO.BusinessLogic.Services
             return Mapper.Map<User, UserDTO>(data);
         }
 
+        public async Task<List<UserDTO>> ListActive()
+        {
+            var data = await DB.UserRepository.SelectActive();
+            return Mapper.Map<List<User>, List<UserDTO>>(data);
+        }
+
         public async Task Update(UserDTO model)
         {
             User obj = new User();

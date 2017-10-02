@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string ctrl = (string)ViewContext.RouteData.Values["controller"];
 }
 
 @section dxscripts{
@@ -21,13 +22,13 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Users" ? "active" : "")" href="/Manage/Users/">Пользователи</a>
+                <a class="nav-link @(ctrl == "Users" ? "active" : "")" href="/Manage/Users/">Пользователи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "Territories" ? "active" : "")" href="/Manage/Territories/">Территории</a>
+                <a class="nav-link @(ctrl == "Territories" ? "active" : "")" href="/Manage/Territories/">Территории</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @(ViewContext.RouteData.Values["controller"].ToString() == "EventTypes" ? "active" : "")" href="/Manage/EventTypes/">Типы событий</a>
+                <a class="nav-link @(ctrl == "EventTypes" ? "active" : "")" href="/Manage/EventTypes/">Типы событий</a>
             </li>
         </ul>
     </div>

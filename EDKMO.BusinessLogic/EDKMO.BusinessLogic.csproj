@@ -48,6 +48,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.0\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -80,7 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessModels\EventCreateResult.cs" />
     <Compile Include="BusinessModels\EventPlaningItem.cs" />
+    <Compile Include="DTO\EventDTO.cs" />
     <Compile Include="DTO\EventTypeDTO.cs" />
     <Compile Include="DTO\TerritoryDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />

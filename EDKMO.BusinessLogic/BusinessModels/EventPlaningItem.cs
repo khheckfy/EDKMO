@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDKMO.BusinessLogic.BusinessModels
 {
@@ -14,7 +10,6 @@ namespace EDKMO.BusinessLogic.BusinessModels
         }
 
         public DateTime Date { private set; get; }
-        public bool IsFree { set; get; }
-
+        public byte UsertId { set; get; }
     }
 }

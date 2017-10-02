@@ -13,5 +13,6 @@ namespace EDKMO.BusinessLogic.Interfaces
         Task<EventTypeDTO> Get(byte id);
         Task Update(EventTypeDTO model);
         Task Delete(byte id);
+        Task<List<EventTypeDTO>> ListAll(); 
     }
 }

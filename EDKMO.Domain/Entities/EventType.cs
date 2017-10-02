@@ -13,6 +13,8 @@ namespace EDKMO.Domain.Entities
         public string Name { set; get; }
         [StringLength(128)]
         public string Color { set; get; }
+        [StringLength(64)]
+        public string FaIcon { set; get; }
 
         public virtual ICollection<Event> Events { get; set; }
     }

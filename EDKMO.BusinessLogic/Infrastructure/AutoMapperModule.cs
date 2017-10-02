@@ -36,6 +36,7 @@ namespace EDKMO.BusinessLogic.Infrastructure
             {
                 cfg.CreateMap<User, UserDTO>();
                 cfg.CreateMap<Territory, TerritoryDTO>();
+                cfg.CreateMap<Event, EventDTO>();
                 cfg.CreateMap<EventType, EventTypeDTO>();
             });
         }
