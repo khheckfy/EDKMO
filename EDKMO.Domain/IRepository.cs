@@ -9,6 +9,8 @@ namespace EDKMO.Domain
     {
         IQueryable<TEntity> Query();
 
+        IEnumerable<TEntity> SelectEnumerable();
+
         List<TEntity> GetAll();
         Task<List<TEntity>> GetAllAsync();
         Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken);

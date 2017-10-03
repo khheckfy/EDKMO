@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/_schedullerView.cshtml.
+        /// </summary>
+        internal static string Scheduller {
+            get {
+                return ResourceManager.GetString("Scheduller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Areas/Manage/Views/Territories/_grid.cshtml.
         /// </summary>
         internal static string Territories {

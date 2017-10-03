@@ -123,6 +123,9 @@
   <data name="EventTypes" xml:space="preserve">
     <value>EventTypes</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="Territories" xml:space="preserve">
     <value>Territories</value>
   </data>

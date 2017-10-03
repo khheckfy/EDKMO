@@ -19,6 +19,11 @@ namespace EDKMO.Data.EntityFramework.Repositories
             _context = context;
         }
 
+        public IEnumerable<TEntity> SelectEnumerable()
+        {
+            return Set.AsEnumerable();
+        }
+
         protected DbSet<TEntity> Set
         {
             get { return _set ?? (_set = _context.Set<TEntity>()); }

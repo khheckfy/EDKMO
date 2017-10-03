@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OverviewPartialEditAppointment.
+        /// </summary>
+        internal static string OverviewPartialEditAppointment {
+            get {
+                return ResourceManager.GetString("OverviewPartialEditAppointment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TerritoriesSelectPartial.
         /// </summary>
         internal static string TerritoriesSelect {

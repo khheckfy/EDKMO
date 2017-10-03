@@ -120,6 +120,12 @@
   <data name="EventTypesSelect" xml:space="preserve">
     <value>EventTypesSelectPartial</value>
   </data>
+  <data name="OverviewPartial" xml:space="preserve">
+    <value>OverviewPartial</value>
+  </data>
+  <data name="OverviewPartialEditAppointment" xml:space="preserve">
+    <value>OverviewPartialEditAppointment</value>
+  </data>
   <data name="TerritoriesSelect" xml:space="preserve">
     <value>TerritoriesSelectPartial</value>
   </data>

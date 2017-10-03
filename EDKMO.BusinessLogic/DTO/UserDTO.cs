@@ -12,5 +12,24 @@ namespace EDKMO.BusinessLogic.DTO
         public TimeSpan EndWork { set; get; }
         public bool IsDisabled { set; get; }
         public byte TerritoryId { set; get; }
+
+        public string FullName
+        {
+            get
+            {
+                string name = LastName;
+                if (!string.IsNullOrEmpty(FirstName))
+                    if (!string.IsNullOrEmpty(name))
+                        name += string.Format(" {0}", FirstName);
+                    else
+                        name = FirstName;
+                if (!string.IsNullOrEmpty(MiddleName))
+                    if (!string.IsNullOrEmpty(name))
+                        name += string.Format(" {0}", MiddleName);
+                    else
+                        name = MiddleName;
+                return name;
+            }
+        }
     }
 }

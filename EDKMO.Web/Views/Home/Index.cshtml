@@ -1,8 +1,29 @@
-﻿
+﻿@model EDKMO.Web.Models.HomeModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Календарь МОФ";
 }
 
-<h2>Index</h2>
+@section dxscripts{
 
-<a href="/Manage/Users/">Управление</a>
+
+    <script type="text/javascript">
+        var deleteIds = null;
+        function OnDeleteSelectedAppointment(s, e) {
+            var selectedApptIDs = scheduler.GetSelectedAppointmentIds();
+            console.log(selectedApptIDs);
+            if (selectedApptIDs.length > 0) {
+                deleteIds = selectedApptIDs;
+            }
+        }
+
+        function OnBeginCallback(s, e) {
+            if (deleteIds != null) {
+                e.customArgs["cmd"] = "DELETE";
+                e.customArgs["deleteIds"] = JSON.stringify(deleteIds);
+                deleteIds = null;
+            }
+        }
+    </script>
+}
+
+@Html.Partial(Resources.GridPartialPath.Scheduller, Model.SchedulerObject)

@@ -6,9 +6,11 @@ using EDKMO.Domain.Entities;
 using System;
 using EDKMO.Core.Extensions;
 using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using AutoMapper;
+using DevExpress.XtraScheduler;
 
 namespace EDKMO.BusinessLogic.Services
 {
@@ -19,6 +21,62 @@ namespace EDKMO.BusinessLogic.Services
         public EventService(IUnitOfWork db)
         {
             DB = db;
+        }
+
+        public async Task Remove(int id)
+        {
+            var obj = await DB.EventRepository.FindByIdAsync(id);
+            if (obj != null)
+            {
+                if (obj.ReportMoId.HasValue)
+                {
+                    var list = await DB.EventRepository.Query().Where(n => n.ReportMoId == obj.ReportMoId.Value).ToListAsync();
+                    foreach (var l in list)
+                        DB.EventRepository.Remove(l);
+                }
+                else
+                    DB.EventRepository.Remove(obj);
+                await DB.SaveChangesAsync();
+            }
+        }
+
+        private object FetchAppointmentsHelperMethod(FetchAppointmentsEventArgs args)
+        {
+            args.ForceReloadAppointments = true;
+
+            DateTime dFrom = args.Interval.Start.Date.AddDays(-7);
+            DateTime dTo = args.Interval.End.Date.AddDays(1).AddSeconds(-1).AddDays(7);
+
+            var query = from e in DB.EventRepository.Query()
+                        where
+                        e.StartDate >= dFrom && e.EndDate <= dTo
+                        select new
+                        {
+                            e.AccountId,
+                            EndDate = DbFunctions.AddHours(e.EndDate, e.User.Territory.UTCHours),
+                            StartDate = DbFunctions.AddHours(e.StartDate, e.User.Territory.UTCHours),
+                            e.EventId,
+                            e.EventName,
+                            e.LongDescription,
+                            e.ShortDescription,
+                            e.ReportMoId,
+                            e.TerritoryId,
+                            e.UserId,
+                            e.User.Territory.UTCHours
+                        };
+
+            return query.ToList();
+        }
+
+        public async Task<SchedulerDataObject> ScheduleObject()
+        {
+            await Task.FromResult(0);
+
+            return new SchedulerDataObject()
+            {
+                Resources = DB.UserRepository.Query().ToList(),
+                FetchAppointments = FetchAppointmentsHelperMethod
+            };
         }
 
         public async Task<List<EventDTO>> ListByDate(DateTime date, byte? territoryId = null, byte? userId = null)
@@ -58,11 +116,11 @@ namespace EDKMO.BusinessLogic.Services
                 Event obj = new Event()
                 {
                     AccountId = evnt.AccountId,
+                    ReportMoId = evnt.ReportMoId,
                     CreatedOn = DateTime.Now,
                     EventName = evnt.EventName,
                     EndDate = evnt.EndDate,
                     EventTypeId = evnt.EventTypeId,
-                    ReportMoId = evnt.ReportMoId,
                     LongDescription = evnt.LongDescription,
                     ShortDescription = evnt.ShortDescription,
                     StartDate = evnt.StartDate,
@@ -101,6 +159,8 @@ namespace EDKMO.BusinessLogic.Services
 
                     DB.EventRepository.Add(new Event()
                     {
+                        AccountId = evnt.AccountId,
+                        ReportMoId = evnt.ReportMoId,
                         CreatedOn = DateTime.Now,
                         EventName = road.Name,
                         StartDate = roadStart,
@@ -134,6 +194,8 @@ namespace EDKMO.BusinessLogic.Services
 
                     DB.EventRepository.Add(new Event()
                     {
+                        AccountId = evnt.AccountId,
+                        ReportMoId = evnt.ReportMoId,
                         CreatedOn = DateTime.Now,
                         EventName = road.Name,
                         StartDate = roadStart,

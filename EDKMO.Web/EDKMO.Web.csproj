@@ -271,6 +271,8 @@
     <Content Include="scripts\jquery-3.2.1.min.js" />
     <Content Include="scripts\jquery-3.2.1.slim.js" />
     <Content Include="scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="scripts\knockout-3.4.2.debug.js" />
+    <Content Include="scripts\knockout-3.4.2.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="scripts\nprogress.js" />
     <Content Include="scripts\nprogress.min.js" />
@@ -317,6 +319,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\EventSelectModel.cs" />
+    <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +340,7 @@
     <Content Include="scripts\popper.js.map" />
     <Content Include="scripts\popper-utils.min.js.map" />
     <Content Include="scripts\popper-utils.js.map" />
+    <Content Include="Views\Partials\_schedullerView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -347,7 +351,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Manage\Models\" />
-    <Folder Include="Views\Events\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EDKMO.BusinessLogic\EDKMO.BusinessLogic.csproj">

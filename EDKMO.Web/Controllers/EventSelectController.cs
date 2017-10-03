@@ -29,6 +29,11 @@ namespace EDKMO.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Index(string d, byte territoryId, string accountId, string reportId, string name)
         {
+            if (string.IsNullOrEmpty(reportId))
+                throw new NullReferenceException("Параметр отчет.Id не указан (reportId)");
+            if (string.IsNullOrEmpty(accountId))
+                throw new NullReferenceException("Параметр организация.Id не указан (accountId)");
+
             if (string.IsNullOrEmpty(d))
                 d = DateTime.Now.Date.ToString();
 
