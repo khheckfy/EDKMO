@@ -36,6 +36,12 @@ namespace EDKMO.BusinessLogic.Services
             return Mapper.Map<List<User>, List<UserDTO>>(data);
         }
 
+        public List<UserDTO> ListActiveRazor()
+        {
+            var data = DB.UserRepository.Query().Where(n => n.IsDisabled == false).ToList();
+            return Mapper.Map<List<User>, List<UserDTO>>(data);
+        }
+
         public async Task Update(UserDTO model)
         {
             User obj = new User();

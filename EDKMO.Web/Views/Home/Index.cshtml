@@ -23,6 +23,35 @@
                 deleteIds = null;
             }
         }
+
+        function schedulerEndCallback(s, e) {
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+
+        function OnInplaceCloseButtonClick(s, e) {
+            scheduler.InplaceEditFormCancel();
+        }
+        function OnSaveInplaceFormData(s, e) {
+            if (IsValidAppointment())
+                scheduler.InplaceEditFormSave();
+        }
+        function OnInplaceFormMoreButtonClick(s, e) {
+            scheduler.InplaceEditFormShowMore();
+        }
+        function OnAppointmentFormSave(s, e) {
+            if (IsValidAppointment())
+                scheduler.AppointmentFormSave();
+        }
+        function OnAppointmentFormCancel(s, e) {
+            scheduler.AppointmentFormCancel()
+        }
+        function OnAppointmentFormDelete(s, e) {
+            scheduler.AppointmentFormDelete();
+        }
+        function IsValidAppointment() {
+            $.validator.unobtrusive.parse(document);
+            return $("form").valid();
+        }
     </script>
 }
 

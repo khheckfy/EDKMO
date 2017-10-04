@@ -97,6 +97,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/CustomAppointmentFormPartial.cshtml.
+        /// </summary>
+        internal static string SchedulerAppEdit {
+            get {
+                return ResourceManager.GetString("SchedulerAppEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/CustomAppointmentViewPartial.cshtml.
+        /// </summary>
+        internal static string SchedulerAppView {
+            get {
+                return ResourceManager.GetString("SchedulerAppView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Views/Partials/_schedullerView.cshtml.
         /// </summary>
         internal static string Scheduller {

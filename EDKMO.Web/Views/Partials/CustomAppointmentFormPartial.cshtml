@@ -1,0 +1,135 @@
+﻿@model EventDTO
+@using System.Web.UI.WebControls;
+@using EDKMO.BusinessLogic.Interfaces;
+@using System.Threading.Tasks;
+
+@using (Html.BeginForm("SaveEvent", "Home"))
+{
+    @Html.DevExpress().FormLayout(fl =>
+{
+    fl.Name = "appName";
+    fl.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Top;
+    fl.ColCount = 2;
+    IEventTypeService eventTypeServie = DependencyResolver.Current.GetService<IEventTypeService>();
+    IUsers usersServie = DependencyResolver.Current.GetService<IUsers>();
+
+
+    fl.Items.Add(m => m.EventName, i =>
+    {
+        i.Caption = "Название";
+        i.ColSpan = 2;
+        i.NestedExtension().TextBox(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+        });
+    });
+
+    fl.Items.Add(m => m.EventTypeId, i =>
+    {
+        i.Caption = "Тип";
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+
+            s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+            s.Name = "EventTypeId";
+
+            s.Properties.TextField = "Name";
+            s.Properties.ValueField = "EventTypeId";
+            s.Properties.ValueType = typeof(byte);
+            s.Properties.DataSource = eventTypeServie.ListAllRazor();
+        });
+    });
+
+    fl.Items.Add(m => m.UserId, i =>
+    {
+        i.Caption = "Тренер";
+        i.NestedExtension().ComboBox(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+
+            s.Properties.ValidationSettings.RequiredField.IsRequired = true;
+
+            s.Properties.TextField = "LastName";
+            s.Properties.ValueField = "UserId";
+            s.Properties.ValueType = typeof(byte);
+            s.Properties.DataSource = usersServie.ListActiveRazor();
+        });
+    });
+
+    fl.Items.Add(m => m.StartDate, i =>
+    {
+        i.Caption = "Начало";
+        i.NestedExtension().DateEdit(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+
+            s.Properties.UseMaskBehavior = true;
+            s.Properties.EditFormat = EditFormat.Custom;
+            s.Properties.EditFormatString = "dd.MM.yyyy HH:mm";
+            s.Properties.TimeSectionProperties.Visible = true;
+            s.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+            s.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "HH:mm";
+        });
+    });
+
+    fl.Items.Add(m => m.EndDate, i =>
+    {
+        i.Caption = "Окончание";
+        i.NestedExtension().DateEdit(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+
+            s.Properties.UseMaskBehavior = true;
+            s.Properties.EditFormat = EditFormat.Custom;
+            s.Properties.EditFormatString = "dd.MM.yyyy HH:mm";
+            s.Properties.TimeSectionProperties.Visible = true;
+            s.Properties.TimeSectionProperties.TimeEditProperties.EditFormat = EditFormat.Custom;
+            s.Properties.TimeSectionProperties.TimeEditProperties.EditFormatString = "HH:mm";
+        });
+    });
+
+    fl.Items.Add(m => m.ShortDescription, i =>
+    {
+        i.Caption = "Комментарий кратко";
+        i.ColSpan = 2;
+        i.NestedExtension().TextBox(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+        });
+    });
+
+    fl.Items.Add(m => m.LongDescription, i =>
+    {
+        i.Caption = "Комментарий полный";
+        i.ColSpan = 2;
+        i.NestedExtension().Memo(s =>
+        {
+            s.Width = Unit.Percentage(100);
+            s.ShowModelErrors = true;
+            s.Properties.Rows = 3;
+        });
+    });
+    fl.Items.Add(i =>
+    {
+        i.ShowCaption = DefaultBoolean.False;
+        i.ColSpan = 2;
+        i.HorizontalAlign = FormLayoutHorizontalAlign.Center;
+    }).SetNestedContent(() =>
+    {
+        Html.DevExpress().Button(s =>
+        {
+            s.Name = "Update";
+            s.Text = "Сохранить";
+            s.RenderMode = ButtonRenderMode.Link;
+            s.ClientSideEvents.Click = "OnAppointmentFormSave";
+        }).Render();
+    });
+}).GetHtml()
+}

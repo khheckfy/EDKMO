@@ -1,0 +1,78 @@
+﻿@model DevExpress.XtraScheduler.Appointment
+@using System.Web.UI.WebControls;
+
+@using (Html.BeginForm())
+{
+    @Html.DevExpress().RoundPanel(settings =>
+{
+    settings.Name = "InplaceFormPanel";
+    settings.Width = Unit.Percentage(100);
+    settings.SetHeaderTemplateContent(c =>
+    {
+        Html.DevExpress().Label(s => s.Text = Model.Subject).Render();
+        Html.DevExpress().Button(s =>
+        {
+            s.Name = "Close";
+            s.Style["float"] = "right";
+            s.Text = " ";
+            s.RenderMode = ButtonRenderMode.Link;
+            s.Images.Image.IconID = DevExpress.Web.ASPxThemes.IconID.ActionsClose16x16;
+            s.ClientSideEvents.Click = "OnInplaceCloseButtonClick";
+        }).Render();
+    });
+    settings.SetContent(() =>
+    {
+        Html.DevExpress().FormLayout(flSettings =>
+        {
+            flSettings.Name = "InplaceForm";
+            flSettings.Width = Unit.Percentage(100);
+            flSettings.Items.Add(m => m.Subject, i =>
+            {
+                i.HelpText = "for instance, Meeting with friends";
+                i.NestedExtension().TextBox(s =>
+                {
+                    s.Width = Unit.Percentage(100);
+                    s.ShowModelErrors = true;
+                });
+            });
+            flSettings.Items.Add(m => m.Description, i =>
+            {
+                i.Caption = "Описание";
+                i.NestedExtension().Memo(s =>
+                {
+                    s.Width = Unit.Percentage(100);
+                    s.ShowModelErrors = true;
+                });
+            });
+
+            flSettings.Items
+                .Add(i =>
+                {
+                    i.ShowCaption = DefaultBoolean.False;
+                    i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+                    i.Width = Unit.Percentage(100);
+                })
+                .SetNestedContent(() =>
+                {
+                    Html.DevExpress().Button(s =>
+                    {
+                        s.Name = "Update";
+                        s.Text = "Update";
+                        s.RenderMode = ButtonRenderMode.Link;
+                        s.Style["display"] = "inline-block";
+                        s.ClientSideEvents.Click = "OnSaveInplaceFormData";
+                    }).Render();
+                    Html.DevExpress().Button(s =>
+                    {
+                        s.Name = "More";
+                        s.Text = "More Information...";
+                        s.RenderMode = ButtonRenderMode.Link;
+                        s.Style["margin-left"] = "10px";
+                        s.Style["display"] = "inline-block";
+                        s.ClientSideEvents.Click = "OnInplaceFormMoreButtonClick";
+                    }).Render();
+                });
+        }).Bind(Model).Render();
+    });
+}).GetHtml()
+}

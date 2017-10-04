@@ -17,7 +17,7 @@ namespace EDKMO.BusinessLogic.DTO
 
         public Guid? AccountId { set; get; }
         public Guid? ReportMoId { set; get; }
-
+        public bool IsMainEvent { set; get; }
         public byte UserId { set; get; }
         public byte EventTypeId { set; get; }
         public byte TerritoryId { set; get; }
@@ -29,5 +29,6 @@ namespace EDKMO.BusinessLogic.DTO
         public string FaIcon { set; get; }
         public string EventTypeName { set; get; }
         public string EventColor { set; get; }
+        public string ROUrl { set; get; }
     }
 }

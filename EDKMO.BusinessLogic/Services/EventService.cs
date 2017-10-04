@@ -23,6 +23,36 @@ namespace EDKMO.BusinessLogic.Services
             DB = db;
         }
 
+        public EventDTO Get(object id)
+        {
+            EventDTO dto = new EventDTO();
+
+            dto = (from e in DB.EventRepository.Query()
+                   where
+                   e.EventId == (int)id
+                   select new EventDTO()
+                   {
+                       IsMainEvent = e.IsMainEvent,
+                       AccountId = e.AccountId,
+                       EndDate = e.EndDate,
+                       EventColor = e.EventType.Color,
+                       EventId = e.EventId,
+                       EventName = e.EventName,
+                       EventTypeId = e.EventTypeId,
+                       EventTypeName = e.EventType.Name,
+                       FaIcon = e.EventType.FaIcon,
+                       LongDescription = e.LongDescription,
+                       ReportMoId = e.ReportMoId,
+                       ShortDescription = e.ShortDescription,
+                       StartDate = e.StartDate,
+                       UserId = e.UserId,
+                       TerritoryId = e.TerritoryId,
+                       ROUrl = e.Territory.ServerPath
+                   }).FirstOrDefault();
+
+            return dto;
+        }
+
         public async Task Remove(int id)
         {
             var obj = await DB.EventRepository.FindByIdAsync(id);
@@ -39,6 +69,7 @@ namespace EDKMO.BusinessLogic.Services
                 await DB.SaveChangesAsync();
             }
         }
+
 
         private object FetchAppointmentsHelperMethod(FetchAppointmentsEventArgs args)
         {
@@ -96,6 +127,28 @@ namespace EDKMO.BusinessLogic.Services
             return result;
         }
 
+        public async Task UpdateEvent(EventDTO evnt)
+        {
+            try
+            {
+                Event obj = await DB.EventRepository.FindByIdAsync(evnt.EventId);
+
+                obj.EventName = evnt.EventName;
+                obj.EndDate = evnt.EndDate;
+                obj.EventTypeId = evnt.EventTypeId;
+                obj.LongDescription = evnt.LongDescription;
+                obj.ShortDescription = evnt.ShortDescription;
+                obj.StartDate = evnt.StartDate;
+                obj.UserId = evnt.UserId;
+
+                await DB.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<EventCreateResult> CreateEvent(EventDTO evnt)
         {
             EventCreateResult result = new EventCreateResult();
@@ -125,7 +178,8 @@ namespace EDKMO.BusinessLogic.Services
                     ShortDescription = evnt.ShortDescription,
                     StartDate = evnt.StartDate,
                     TerritoryId = evnt.TerritoryId,
-                    UserId = evnt.UserId
+                    UserId = evnt.UserId,
+                    IsMainEvent = true
                 };
 
                 //Приводим все к гринвичу
@@ -167,7 +221,8 @@ namespace EDKMO.BusinessLogic.Services
                         EndDate = roadEnd,
                         EventTypeId = road.EventTypeId,
                         TerritoryId = evnt.TerritoryId,
-                        UserId = evnt.UserId
+                        UserId = evnt.UserId,
+                        IsMainEvent = false
                     });
 
                     tsFrom = roadStart.TimeOfDay;
@@ -202,7 +257,8 @@ namespace EDKMO.BusinessLogic.Services
                         EndDate = roadEnd,
                         EventTypeId = road.EventTypeId,
                         TerritoryId = evnt.TerritoryId,
-                        UserId = evnt.UserId
+                        UserId = evnt.UserId,
+                        IsMainEvent = false
                     });
 
                     tsFrom = roadStart.TimeOfDay;

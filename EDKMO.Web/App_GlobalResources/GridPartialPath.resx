@@ -129,6 +129,12 @@
   <data name="FaIcon" xml:space="preserve">
     <value>~/Areas/Manage/Views/EventTypes/_gridFaIcon.cshtml</value>
   </data>
+  <data name="SchedulerAppEdit" xml:space="preserve">
+    <value>~/Views/Partials/CustomAppointmentFormPartial.cshtml</value>
+  </data>
+  <data name="SchedulerAppView" xml:space="preserve">
+    <value>~/Views/Partials/CustomAppointmentViewPartial.cshtml</value>
+  </data>
   <data name="Scheduller" xml:space="preserve">
     <value>~/Views/Partials/_schedullerView.cshtml</value>
   </data>

@@ -11,6 +11,7 @@ namespace EDKMO.BusinessLogic.Interfaces
     {
         IQueryable Select();
         Task<List<UserDTO>> ListActive();
+        List<UserDTO> ListActiveRazor();
         Task<UserDTO> Get(byte id);
         Task Update(UserDTO model);
         Task Delete(byte id);

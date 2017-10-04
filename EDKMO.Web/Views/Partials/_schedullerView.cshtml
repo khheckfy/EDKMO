@@ -1,44 +1,5 @@
 ﻿@using EDKMO.Web.Controllers;
+@using EDKMO.BusinessLogic.Interfaces;
 @using System.Web.UI.WebControls;
 
-@Html.DevExpress().Scheduler(settings =>
-{
-    settings.Name = "scheduler";
-    settings.CallbackRouteValues = new { Controller = Resources.Controllers.Home, Action = Resources.GridActions.OverviewPartial };
-    settings.EditAppointmentRouteValues = new { Controller = Resources.Controllers.Home, Action = Resources.GridActions.OverviewPartialEditAppointment };
-    settings.Start = DateTime.Now;
-
-    settings.Views.DayView.Styles.ScrollAreaHeight = Unit.Pixel(300);
-    settings.Views.WeekView.Styles.DateCellBody.Height = Unit.Pixel(250);
-    settings.Views.FullWeekView.Styles.ScrollAreaHeight = Unit.Pixel(300);
-    settings.Views.WeekView.Enabled = false;
-    settings.Views.FullWeekView.Enabled = false;
-    settings.Views.TimelineView.Enabled = false;
-    settings.Views.WorkWeekView.Enabled = true;
-    settings.Width = Unit.Percentage(100);
-    settings.Views.DayView.Styles.ScrollAreaHeight = 400;
-    settings.Views.WorkWeekView.Styles.ScrollAreaHeight = 400;
-    settings.Views.DayView.DayCount = 1;
-    settings.GroupType = SchedulerGroupType.Resource;
-
-    var wt = new TimeOfDayInterval(TimeSpan.FromHours(9), TimeSpan.FromHours(18));
-    settings.Views.DayView.WorkTime = wt;
-    settings.Views.DayView.ShowWorkTimeOnly = true;
-    settings.Views.DayView.TimeScale = TimeSpan.FromMinutes(30);
-
-    settings.Views.WorkWeekView.ShowWorkTimeOnly = true;
-    settings.Views.WorkWeekView.WorkTime = wt;
-    settings.Views.WorkWeekView.TimeScale = TimeSpan.FromMinutes(30);
-
-    settings.Storage.Appointments.Assign(SchedulerDemoHelper.DefaultAppointmentStorage);
-    settings.Storage.Resources.Assign(SchedulerDemoHelper.DefaultResourceStorage);
-
-    settings.Storage.EnableReminders = false;
-
-    settings.OptionsCustomization.AllowAppointmentCreate = DevExpress.XtraScheduler.UsedAppointmentType.None;
-    //settings.OptionsCustomization.AllowAppointmentEdit = DevExpress.XtraScheduler.UsedAppointmentType.Custom;
-    //settings.OptionsCustomization.AllowAppointmentDelete = DevExpress.XtraScheduler.UsedAppointmentType.None;
-
-    settings.ClientSideEvents.AppointmentDeleting = "OnDeleteSelectedAppointment";
-    settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
-}).Bind(Model.FetchAppointments, Model.Resources).GetHtml()
+@Html.DevExpress().Scheduler(SchedulerSettingsHelper.CreateSchedulerSettings(Html)).Bind(Model.FetchAppointments, Model.Resources).GetHtml()

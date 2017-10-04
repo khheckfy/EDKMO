@@ -18,6 +18,12 @@ namespace EDKMO.BusinessLogic.Services
             DB = db;
         }
 
+        public List<EventTypeDTO> ListAllRazor()
+        {
+            var data = DB.EventTypeRepository.GetAll();
+            return Mapper.Map<List<EventType>, List<EventTypeDTO>>(data);
+        }
+
         public async Task<List<EventTypeDTO>> ListAll()
         {
             var data = await DB.EventTypeRepository.GetAllAsync();

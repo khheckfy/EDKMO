@@ -1,0 +1,19 @@
+﻿@model EventDTO
+
+@{
+    string desc = string
+        .Format("<span class=\"fa fa-{6}\"></span> {0} {1}-{2} <br />{5} <br />{3}<br />{4}",
+        Model.EventTypeName,
+        Model.StartDate.ToString(@"HH:mm"),
+        Model.EndDate.ToString(@"HH:mm"),
+        Model.ShortDescription,
+        Model.LongDescription,
+        Model.EventName,
+        Model.FaIcon
+        );
+}
+<div style="margin:2px; background-color:@Model.EventColor" data-placement="top" data-html="true" title="@desc" data-toggle="tooltip">
+    <span class="fa fa-@Model.FaIcon"></span>
+    <span class="badge badge-primary">@Model.StartDate.ToString(@"HH:mm")-@Model.EndDate.ToString(@"HH:mm")</span><br />
+    <a class="text-primary" target="_blank" href="@(Model.ROUrl)Pages/EduReports/View.aspx?vid=@Model.ReportMoId&id=@Model.AccountId">@Model.EventName</a>
+</div>

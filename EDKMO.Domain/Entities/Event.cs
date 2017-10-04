@@ -20,6 +20,7 @@ namespace EDKMO.Domain.Entities
         public string ShortDescription { set; get; }
         [StringLength(1024)]
         public string LongDescription { set; get; }
+        public bool IsMainEvent { set; get; }
 
         public Guid? AccountId { set; get; }
         public Guid? ReportMoId { set; get; }

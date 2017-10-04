@@ -1,9 +1,15 @@
-﻿using DevExpress.Web.Mvc;
+﻿using DevExpress.Web.ASPxScheduler;
+using DevExpress.Web.Mvc;
+using DevExpress.XtraScheduler;
+using EDKMO.BusinessLogic.DTO;
 using EDKMO.BusinessLogic.Interfaces;
 using EDKMO.Web.Models;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 
 namespace EDKMO.Web.Controllers
 {
@@ -42,8 +48,23 @@ namespace EDKMO.Web.Controllers
                 foreach (int id in arr)
                     await EventService.Remove(id);
             }
+            else
+            {
+                var SchedulerObject = await EventService.ScheduleObject();
+                var list = SchedulerExtension.GetAppointmentsToUpdate<EventDTO>(SchedulerSettingsHelper.CreateSchedulerSettings(null), SchedulerObject.FetchAppointments, SchedulerObject.Resources);
+                if (list != null && list.Length > 0)
+                {
+                    foreach (EventDTO o in list)
+                        await EventService.UpdateEvent(o);
+                }
+            }
 
             return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject());
+        }
+
+        public ActionResult SaveEvent(EventDTO model)
+        {
+            return View(Resources.GridPartialPath.SchedulerAppEdit, model);
         }
     }
 
@@ -69,21 +90,6 @@ namespace EDKMO.Web.Controllers
             appointmentStorage.Mappings.Subject = "EventName";
             appointmentStorage.Mappings.ResourceId = "UserId";
             appointmentStorage.Mappings.Description = "LongDescription";
-
-            /*
-            appointmentStorage.Mappings.AppointmentId = "EventId";
-            appointmentStorage.Mappings.Start = "StartDate";
-            appointmentStorage.Mappings.End = "EndDate";
-            appointmentStorage.Mappings.Subject = "EventName";
-            appointmentStorage.Mappings.Description = "ShortDescription";
-            appointmentStorage.Mappings.Location = "LongDescription";
-            appointmentStorage.Mappings.AllDay = "AllDay";
-            appointmentStorage.Mappings.Type = "EventTypeId";
-            appointmentStorage.Mappings.RecurrenceInfo = "ShortDescription";
-            appointmentStorage.Mappings.ReminderInfo = "ShortDescription";
-            appointmentStorage.Mappings.Label = "ShortDescription";
-            appointmentStorage.Mappings.Status = "ShortDescription";
-            appointmentStorage.Mappings.ResourceId = "UserId";*/
             return appointmentStorage;
         }
 
@@ -103,6 +109,79 @@ namespace EDKMO.Web.Controllers
             resourceStorage.Mappings.ResourceId = "UserId";
             resourceStorage.Mappings.Caption = "LastName";
             return resourceStorage;
+        }
+    }
+
+    public static class SchedulerSettingsHelper
+    {
+        public static SchedulerSettings CreateSchedulerSettings(HtmlHelper htmlHelper)
+        {
+
+            SchedulerSettings settings = new SchedulerSettings();
+
+            settings.Name = "scheduler";
+            settings.CallbackRouteValues = new { Controller = Resources.Controllers.Home, Action = Resources.GridActions.OverviewPartial };
+            settings.EditAppointmentRouteValues = new { Controller = Resources.Controllers.Home, Action = Resources.GridActions.OverviewPartialEditAppointment };
+            settings.Start = DateTime.Now;
+
+            settings.Views.DayView.Styles.ScrollAreaHeight = Unit.Pixel(300);
+            settings.Views.WeekView.Styles.DateCellBody.Height = Unit.Pixel(250);
+            settings.Views.FullWeekView.Styles.ScrollAreaHeight = Unit.Pixel(300);
+            settings.Views.WeekView.Enabled = false;
+            settings.Views.FullWeekView.Enabled = false;
+            settings.Views.TimelineView.Enabled = false;
+            settings.Views.WorkWeekView.Enabled = true;
+            settings.Width = Unit.Percentage(100);
+            settings.Views.DayView.Styles.ScrollAreaHeight = 400;
+            settings.Views.WorkWeekView.Styles.ScrollAreaHeight = 400;
+            settings.Views.DayView.DayCount = 1;
+            settings.GroupType = SchedulerGroupType.Resource;
+
+            settings.OptionsCustomization.AllowAppointmentCreate = UsedAppointmentType.None;
+            settings.OptionsCustomization.AllowAppointmentEdit = UsedAppointmentType.None;
+            settings.OptionsCustomization.AllowInplaceEditor = UsedAppointmentType.None;
+
+            var wt = new TimeOfDayInterval(TimeSpan.FromHours(9), TimeSpan.FromHours(18));
+            settings.Views.DayView.WorkTime = wt;
+            settings.Views.DayView.ShowWorkTimeOnly = true;
+            settings.Views.DayView.TimeScale = TimeSpan.FromMinutes(30);
+
+            settings.Views.WorkWeekView.ShowWorkTimeOnly = true;
+            settings.Views.WorkWeekView.WorkTime = wt;
+            settings.Views.WorkWeekView.TimeScale = TimeSpan.FromMinutes(30);
+
+            settings.Storage.Appointments.Assign(SchedulerDemoHelper.DefaultAppointmentStorage);
+            settings.Storage.Resources.Assign(SchedulerDemoHelper.DefaultResourceStorage);
+
+            settings.Storage.EnableReminders = false;
+
+            settings.ClientSideEvents.AppointmentDeleting = "OnDeleteSelectedAppointment";
+            settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+
+            IEventService eventServie = DependencyResolver.Current.GetService<IEventService>();
+            IUsers userService = DependencyResolver.Current.GetService<IUsers>();
+
+            settings.Views.DayView.SetVerticalAppointmentTemplateContent(c =>
+            {
+                EventDTO e = eventServie.Get(c.AppointmentViewInfo.Appointment.Id);
+                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerAppView, e);
+            });
+
+            settings.ClientSideEvents.EndCallback = "schedulerEndCallback";
+
+            settings.Views.WorkWeekView.SetVerticalAppointmentTemplateContent(c =>
+            {
+                EventDTO e = eventServie.Get(c.AppointmentViewInfo.Appointment.Id);
+                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerAppView, e);
+            });
+
+            settings.OptionsForms.SetAppointmentFormTemplateContent(c =>
+            {
+                EventDTO e = eventServie.Get(c.Appointment.Id);
+                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerAppEdit, e);
+            });
+
+            return settings;
         }
     }
 }

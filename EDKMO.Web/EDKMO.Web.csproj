@@ -341,6 +341,9 @@
     <Content Include="scripts\popper-utils.min.js.map" />
     <Content Include="scripts\popper-utils.js.map" />
     <Content Include="Views\Partials\_schedullerView.cshtml" />
+    <Content Include="Views\Partials\CustomAppointmentFormPartial.cshtml" />
+    <Content Include="Views\Partials\CustomInplaceEditorFormPartial.cshtml" />
+    <Content Include="Views\Partials\CustomAppointmentViewPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
