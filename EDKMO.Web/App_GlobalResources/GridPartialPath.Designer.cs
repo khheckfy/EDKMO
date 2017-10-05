@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Home/EventBlockForm.cshtml.
+        /// </summary>
+        internal static string EventBlockForm {
+            get {
+                return ResourceManager.GetString("EventBlockForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Areas/Manage/Views/EventTypes/_grid.cshtml.
         /// </summary>
         internal static string EventTypes {
@@ -97,6 +106,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Home/EventForm.cshtml.
+        /// </summary>
+        internal static string GetEvent {
+            get {
+                return ResourceManager.GetString("GetEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Views/Partials/CustomAppointmentFormPartial.cshtml.
         /// </summary>
         internal static string SchedulerAppEdit {
@@ -111,6 +129,15 @@ namespace Resources {
         internal static string SchedulerAppView {
             get {
                 return ResourceManager.GetString("SchedulerAppView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/ResourceViewPartial.cshtml.
+        /// </summary>
+        internal static string SchedulerResourceHeader {
+            get {
+                return ResourceManager.GetString("SchedulerResourceHeader", resourceCulture);
             }
         }
         

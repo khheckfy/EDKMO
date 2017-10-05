@@ -134,12 +134,8 @@ namespace EDKMO.BusinessLogic.Services
                 Event obj = await DB.EventRepository.FindByIdAsync(evnt.EventId);
 
                 obj.EventName = evnt.EventName;
-                obj.EndDate = evnt.EndDate;
-                obj.EventTypeId = evnt.EventTypeId;
                 obj.LongDescription = evnt.LongDescription;
                 obj.ShortDescription = evnt.ShortDescription;
-                obj.StartDate = evnt.StartDate;
-                obj.UserId = evnt.UserId;
 
                 await DB.SaveChangesAsync();
             }
@@ -216,7 +212,6 @@ namespace EDKMO.BusinessLogic.Services
                         AccountId = evnt.AccountId,
                         ReportMoId = evnt.ReportMoId,
                         CreatedOn = DateTime.Now,
-                        EventName = road.Name,
                         StartDate = roadStart,
                         EndDate = roadEnd,
                         EventTypeId = road.EventTypeId,
@@ -252,7 +247,6 @@ namespace EDKMO.BusinessLogic.Services
                         AccountId = evnt.AccountId,
                         ReportMoId = evnt.ReportMoId,
                         CreatedOn = DateTime.Now,
-                        EventName = road.Name,
                         StartDate = roadStart,
                         EndDate = roadEnd,
                         EventTypeId = road.EventTypeId,
@@ -280,6 +274,53 @@ namespace EDKMO.BusinessLogic.Services
 
 
 
+                await DB.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                result.Error = ex.Message;
+                result.ErrorDump = ex.CreateExceptionDump();
+            }
+
+            return result;
+        }
+
+
+        public async Task<EventCreateResult> CreateBlockEvent(EventDTO evnt)
+        {
+            EventCreateResult result = new EventCreateResult();
+
+            try
+            {
+                User user = await DB.UserRepository.FindByIdAsync(evnt.UserId);
+                Territory territory = await DB.TerritoryRepository.FindByIdAsync(user.TerritoryId);
+
+                //Надо перевести время во врмея пользователя по его территории
+                evnt.StartDate = evnt.StartDate.AddHours((-1) * territory.UTCHours);
+                evnt.EndDate = evnt.EndDate.AddHours((-1) * territory.UTCHours);
+
+                DateTime date = evnt.StartDate.Date;
+                while (date <= evnt.EndDate.Date)
+                {
+                    Event obj = new Event()
+                    {
+                        CreatedOn = DateTime.Now,
+
+                        EndDate = date.Add(evnt.EndDate.TimeOfDay),
+                        StartDate = date.Add(evnt.StartDate.TimeOfDay),
+
+                        EventTypeId = evnt.EventTypeId,
+                        LongDescription = evnt.LongDescription,
+                        ShortDescription = evnt.ShortDescription,
+                        TerritoryId = user.TerritoryId,
+                        UserId = evnt.UserId,
+                        IsMainEvent = true
+                    };
+
+                    DB.EventRepository.Add(obj);
+
+                    date = date.AddDays(1);
+                }
                 await DB.SaveChangesAsync();
             }
             catch (Exception ex)

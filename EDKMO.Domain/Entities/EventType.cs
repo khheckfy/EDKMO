@@ -15,6 +15,7 @@ namespace EDKMO.Domain.Entities
         public string Color { set; get; }
         [StringLength(64)]
         public string FaIcon { set; get; }
+        public bool IsRequiredReport { set; get; }
 
         public virtual ICollection<Event> Events { get; set; }
     }

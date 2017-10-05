@@ -1,0 +1,59 @@
+﻿@model EDKMO.Web.Models.EventBlockFormModel
+
+@using (Html.BeginForm("CreateEventBlock", "Home", FormMethod.Post, new { @id = "CreateEventBlockForm" }))
+{
+    @Html.HiddenFor(m => m.UserId)
+    <div class="modal" id="mbx">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создание события для @Model.UserName</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label>Событие</label>
+                            <select id="EventTypeId" class="form-control" name="EventTypeId">
+                                @foreach (EventTypeDTO t in Model.EventTypes)
+                                {
+                                    <option value="@t.EventTypeId">@t.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group  col-md-6">
+                            <label>Дата начала</label>
+                            <input type="date" value="@Model.DateStart.ToString()" name="DateStart" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Время начала</label>
+                            @Html.TextBoxFor(m => m.TimeFrom, new { @class = "form-control", @type = "time" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Дата окончания</label>
+                            <input type="date" value="@Model.DateEnd.ToString()" name="DateEnd" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Время окончания</label>
+                            @Html.TextBoxFor(m => m.TimeTo, new { @class = "form-control", @type = "time" })
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Краткий комментарий</label>
+                            @Html.TextBoxFor(m => m.ShortDesc, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label>Полный комментарий</label>
+                            @Html.TextAreaFor(m => m.LongDesc, new { @class = "form-control", @rows = 3 })
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="SendForm()">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

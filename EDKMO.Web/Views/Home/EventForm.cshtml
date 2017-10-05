@@ -1,0 +1,38 @@
+﻿@model EventDTO
+
+
+@using (Html.BeginForm("SaveEvent", "Home"))
+{
+    @Html.HiddenFor(m => m.EventId);
+
+    <div class="modal" id="mbx">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактирование события</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Называние события</label>
+                        @Html.TextBoxFor(m => m.EventName, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Краткий комментарий</label>
+                        @Html.TextBoxFor(m => m.ShortDescription, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label>Полный комментарий</label>
+                        @Html.TextAreaFor(m => m.LongDescription, new { @class = "form-control", @rows = 3 })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="SendEventDesc()">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

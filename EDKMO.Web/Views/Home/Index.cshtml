@@ -28,6 +28,11 @@
             $('[data-toggle="tooltip"]').tooltip();
         }
 
+        function schedulerInit(s, e) {
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+
+
         function OnInplaceCloseButtonClick(s, e) {
             scheduler.InplaceEditFormCancel();
         }
@@ -52,7 +57,86 @@
             $.validator.unobtrusive.parse(document);
             return $("form").valid();
         }
+
+        function OnAppointmentDoubleClick(s, e) {
+            $('.modal').remove();
+            NProgress.set(0.4);
+            var url = '@Url.Action("GetEvent", "Home")';
+            url += '/?id=' + e.appointmentId;
+            $('#eventForm').load(url, function () {
+                $('.modal').modal('show');
+                NProgress.done();
+            });
+        }
+
+        function SendEventDesc() {
+            NProgress.set(0.4);
+
+            var fd = new FormData();
+
+            fd.append('EventId', $('[name="EventId"]').val());
+            fd.append('EventName', $('[name="EventName"]').val());
+            fd.append('ShortDescription', $('[name="ShortDescription"]').val());
+            fd.append('LongDescription', $('[name="LongDescription"]').val());
+
+            $.ajax({
+                url: '@Url.Action("SaveEvent", "Home")',
+                type: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd,
+                success: function (data) {
+                    $('.modal').modal('hide');
+                    scheduler.Refresh();
+                    NProgress.done();
+                }
+            });
+        }
+
+        function SendForm() {
+            NProgress.set(0.4);
+           
+            var fd = new FormData();
+
+            fd.append('UserId', $('[name="UserId"]').val());
+            fd.append('EventTypeId', $('[name="EventTypeId"]').val());
+            fd.append('DateStart', $('[name="DateStart"]').val());
+            fd.append('TimeFrom', $('[name="TimeFrom"]').val());
+            fd.append('DateEnd', $('[name="DateEnd"]').val());
+            fd.append('TimeTo', $('[name="TimeTo"]').val());
+            fd.append('ShortDesc', $('[name="ShortDesc"]').val());
+            fd.append('LongDesc', $('[name="LongDesc"]').val());
+
+            $.ajax({
+                url: '@Url.Action("CreateEventBlock", "Home")',
+                type: 'post',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: fd,
+                success: function (data) {
+                    $('.modal').modal('hide');
+                    scheduler.Refresh();
+                    NProgress.done();
+                }
+            });
+        }
+
+        function createNewEvent(id, name) {
+            $('.modal').remove();
+            NProgress.set(0.4);
+            var url = '@Url.Action("EventBlockForm", "Home")';
+            url += '?userId=' + id;
+            url += '&userName=' + name;
+            $('#eventForm').load(url, function () {
+                $('.modal').modal('show');
+                NProgress.done();
+            });
+        }
     </script>
 }
 
 @Html.Partial(Resources.GridPartialPath.Scheduller, Model.SchedulerObject)
+
+<div id="eventForm"></div>

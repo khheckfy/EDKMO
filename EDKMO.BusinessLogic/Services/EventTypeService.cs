@@ -50,6 +50,7 @@ namespace EDKMO.BusinessLogic.Services
             obj.Name = model.Name;
             obj.Color = model.Color;
             obj.FaIcon = model.FaIcon;
+            obj.IsRequiredReport = model.IsRequiredReport;
 
             if (model.EventTypeId == 0)
                 DB.EventTypeRepository.Add(obj);

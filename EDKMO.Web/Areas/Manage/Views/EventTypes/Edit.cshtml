@@ -20,7 +20,13 @@
         <input type="text" id="l3" aria-describedby="emailHelp1" value="@Model.FaIcon" name="FaIcon">
         <small id="emailHelp1" class="form-text text-muted">Иконка в формате dont-awesome</small>
     </div>
-
+    <div class="form-check">
+        <label class="form-check-label">
+            @Html.EditorFor(x => x.IsRequiredReport, new { @class = "form-check-input" })
+            Обязателен отчет
+        </label>
+        <small id="emailHelp1" class="form-text text-muted">Для больничных, планерок и т.п. отчет и организация не нужны</small>
+    </div>
     <button type="submit" class="btn btn-primary">Сохранить</button>
             <input type="hidden" name="EventTypeId" value="@Model.EventTypeId" />
 }

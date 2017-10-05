@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
+using System.Linq;
 
 namespace EDKMO.Web.Controllers
 {
@@ -17,11 +18,13 @@ namespace EDKMO.Web.Controllers
     {
         IUsers UserService;
         IEventService EventService;
+        IEventTypeService EventTypeService;
 
-        public HomeController(IUsers userService, IEventService eventService)
+        public HomeController(IUsers userService, IEventService eventService, IEventTypeService eventTypeService)
         {
             UserService = userService;
             EventService = eventService;
+            EventTypeService = eventTypeService;
         }
 
         // GET: Home
@@ -39,6 +42,40 @@ namespace EDKMO.Web.Controllers
             return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject());
         }
 
+        public ActionResult GetEvent(int id)
+        {
+            EventDTO obj = EventService.Get(id);
+            return PartialView(Resources.GridPartialPath.GetEvent, obj);
+        }
+
+        public async Task<ActionResult> EventBlockForm(byte userId, string userName)
+        {
+            EventBlockFormModel model = new EventBlockFormModel(userId, userName);
+
+            model.EventTypes = await EventTypeService.ListAll();
+            model.EventTypes = model.EventTypes.Where(n => n.IsRequiredReport == false).ToList();
+
+            return PartialView(Resources.GridPartialPath.EventBlockForm, model);
+        }
+
+        [HttpPost]
+        public async  Task<JsonResult> CreateEventBlock(EventBlockFormModel model)
+        {
+            model.DateStart = model.DateStart.Add(model.TimeFrom);
+            model.DateEnd = model.DateEnd.Add(model.TimeTo);
+            await EventService.CreateBlockEvent(new EventDTO()
+            {
+                EndDate = model.DateEnd,
+                StartDate = model.DateStart,
+                EventTypeId = model.EventTypeId,
+                UserId = model.UserId,
+                IsMainEvent = true,
+                LongDescription = model.LongDesc,
+                ShortDescription = model.ShortDesc,
+            });
+            return Json(0);
+        }
+        
         public async Task<ActionResult> OverviewPartialEditAppointment(string cmd, string deleteIds)
         {
             if (cmd == "DELETE")
@@ -62,9 +99,10 @@ namespace EDKMO.Web.Controllers
             return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject());
         }
 
-        public ActionResult SaveEvent(EventDTO model)
+        public async Task<JsonResult> SaveEvent(EventDTO model)
         {
-            return View(Resources.GridPartialPath.SchedulerAppEdit, model);
+            await EventService.UpdateEvent(model);
+            return Json(0);
         }
     }
 
@@ -157,6 +195,8 @@ namespace EDKMO.Web.Controllers
 
             settings.ClientSideEvents.AppointmentDeleting = "OnDeleteSelectedAppointment";
             settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
+            settings.ClientSideEvents.Init = "schedulerInit";
+            settings.ClientSideEvents.AppointmentDoubleClick = "OnAppointmentDoubleClick";
 
             IEventService eventServie = DependencyResolver.Current.GetService<IEventService>();
             IUsers userService = DependencyResolver.Current.GetService<IUsers>();
@@ -179,6 +219,13 @@ namespace EDKMO.Web.Controllers
             {
                 EventDTO e = eventServie.Get(c.Appointment.Id);
                 System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerAppEdit, e);
+            });
+
+            var users = userService.ListActiveRazor();
+
+            settings.SetHorizontalResourceHeaderTemplateContent(c =>
+            {
+                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerResourceHeader, new Tuple<byte, string>((byte)c.Resource.Id, c.Resource.Caption));
             });
 
             return settings;

@@ -39,7 +39,10 @@ namespace EDKMO.Web.Controllers
 
             EventSelectModel model = new EventSelectModel(DateTime.Parse(d));
 
-            ViewBag.EventTypes = await EventTypeService.ListAll();
+            var eventTypes = await EventTypeService.ListAll();
+            eventTypes = eventTypes.Where(n => n.IsRequiredReport == true).ToList();
+            ViewBag.EventTypes = eventTypes;
+            
             model.Users = await UsersService.ListActive();
             model.Territory = await TerritoriesService.Get(territoryId);
 
@@ -66,7 +69,9 @@ namespace EDKMO.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(EventDTO obj)
         {
-            ViewBag.EventTypes = await EventTypeService.ListAll();
+            var eventTypes = await EventTypeService.ListAll();
+            eventTypes = eventTypes.Where(n => n.IsRequiredReport == true).ToList();
+            ViewBag.EventTypes = eventTypes;
 
             EventSelectModel model = new EventSelectModel(obj.StartDate);
 

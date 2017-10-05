@@ -12,8 +12,19 @@
         Model.FaIcon
         );
 }
-<div style="margin:2px; background-color:@Model.EventColor" data-placement="top" data-html="true" title="@desc" data-toggle="tooltip">
-    <span class="fa fa-@Model.FaIcon"></span>
+<div style="background-color:@Model.EventColor; border-round:3px;" data-placement="top" data-html="true" title="@desc" data-toggle="tooltip">
+    <span data-placement="top" data-html="true" title="@desc" data-toggle="tooltip" class="badge badge-light"><span class="fa fa-@Model.FaIcon"></span> @Model.EventTypeName</span>
+    @if (!string.IsNullOrEmpty(@Model.EventName))
+    {
+        if (Model.ReportMoId.HasValue)
+        {
+            <a class="text-primary" target="_blank" href="@(Model.ROUrl)Pages/EduReports/View.aspx?vid=@Model.ReportMoId&id=@Model.AccountId">@Model.EventName</a>
+        }
+        else
+        {
+            <span class="text-dark">@Model.EventName</span>
+        }
+    }
     <span class="badge badge-primary">@Model.StartDate.ToString(@"HH:mm")-@Model.EndDate.ToString(@"HH:mm")</span><br />
-    <a class="text-primary" target="_blank" href="@(Model.ROUrl)Pages/EduReports/View.aspx?vid=@Model.ReportMoId&id=@Model.AccountId">@Model.EventName</a>
+
 </div>
