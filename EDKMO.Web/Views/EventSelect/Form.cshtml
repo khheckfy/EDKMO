@@ -3,18 +3,18 @@
 
 @model EventDTO
 
-@using (Html.BeginForm("Index", Resources.Controllers.EventSelect, FormMethod.Post, new { id = "formid", enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Index", "EventSelect", FormMethod.Post, new { id = "EventSelect_formid" }))
 {
     @Html.HiddenFor(model => model.TerritoryId);
     @Html.HiddenFor(model => model.UserId);
     @Html.HiddenFor(model => model.EventName);
     @Html.HiddenFor(model => model.ReportMoId);
     @Html.HiddenFor(model => model.AccountId);
-   
+
     <table>
         <tr>
             <td>Тренер</td>
-            <td>@Html.TextBoxFor(model => model.UserName, new { @class = "w-100", @readonly= "readonly" })</td>
+            <td>@Html.TextBoxFor(model => model.UserName, new { @class = "w-100", @readonly = "readonly" })</td>
             <td>Тип</td>
             <td>
                 <select id="q4" class="w-100" name="EventTypeId">
@@ -55,5 +55,23 @@
             <td colspan="4">@Html.TextAreaFor(model => model.LongDescription, new { @class = "w-100" })</td>
         </tr>
     </table>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="#" onclick="onSave()" class="btn btn-primary">Сохранить</a>
 }
+
+<script type="text/javascript">
+    function onSave() {
+        var form = document.forms.namedItem('EventSelect_formid');
+        var fd = new FormData(form);
+
+        $.ajax({
+            url: "/EventSelect/Index",
+            type: "POST",
+            data: fd,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,   // tell jQuery not to set contentType
+            success: function () {
+                window.location.reload();
+            }
+        });
+    }
+</script> 
