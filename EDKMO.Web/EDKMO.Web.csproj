@@ -263,7 +263,9 @@
     <Content Include="scripts\umd\popper-utils.min.js" />
     <Content Include="scripts\umd\popper.js" />
     <Content Include="scripts\umd\popper.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -325,6 +327,7 @@
     <Content Include="Views\Home\EventForm.cshtml" />
     <Content Include="Views\Home\EventBlockForm.cshtml" />
     <Content Include="Views\Partials\ResourceViewPartial.cshtml" />
+    <Content Include="Views\Partials\_schedullerViewResources.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

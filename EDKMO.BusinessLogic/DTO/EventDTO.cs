@@ -30,5 +30,6 @@ namespace EDKMO.BusinessLogic.DTO
         public string EventTypeName { set; get; }
         public string EventColor { set; get; }
         public string ROUrl { set; get; }
+        public int UTCHours { set; get; }
     }
 }

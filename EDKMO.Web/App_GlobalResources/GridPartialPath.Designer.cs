@@ -203,5 +203,14 @@ namespace Resources {
                 return ResourceManager.GetString("UsersAdd", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/_schedullerViewResources.cshtml.
+        /// </summary>
+        internal static string UsersDropDown {
+            get {
+                return ResourceManager.GetString("UsersDropDown", resourceCulture);
+            }
+        }
     }
 }

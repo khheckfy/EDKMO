@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace EDKMO.Web.Controllers
 {
@@ -31,15 +32,21 @@ namespace EDKMO.Web.Controllers
         public async Task<ActionResult> Index()
         {
             HomeModel model = new HomeModel();
-
-            model.SchedulerObject = await EventService.ScheduleObject();
+            model.Users = await UserService.ListActive();
+            model.SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds());
 
             return View(model);
         }
 
         public async Task<ActionResult> OverviewPartial()
         {
-            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject());
+            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds()));
+        }
+
+        List<byte> GetSelectedResourceIds()
+        {
+            string request = (Request.Params["SelectedResources"] != null) ? (Request.Params["SelectedResources"]) : string.Empty;
+            return (request != string.Empty) ? request.Split(',').Select(n => byte.Parse(n)).ToList<byte>() : new List<byte>();
         }
 
         public ActionResult GetEvent(int id)
@@ -59,7 +66,7 @@ namespace EDKMO.Web.Controllers
         }
 
         [HttpPost]
-        public async  Task<JsonResult> CreateEventBlock(EventBlockFormModel model)
+        public async Task<JsonResult> CreateEventBlock(EventBlockFormModel model)
         {
             model.DateStart = model.DateStart.Add(model.TimeFrom);
             model.DateEnd = model.DateEnd.Add(model.TimeTo);
@@ -75,7 +82,7 @@ namespace EDKMO.Web.Controllers
             });
             return Json(0);
         }
-        
+
         public async Task<ActionResult> OverviewPartialEditAppointment(string cmd, string deleteIds)
         {
             if (cmd == "DELETE")
@@ -87,7 +94,7 @@ namespace EDKMO.Web.Controllers
             }
             else
             {
-                var SchedulerObject = await EventService.ScheduleObject();
+                var SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds());
                 var list = SchedulerExtension.GetAppointmentsToUpdate<EventDTO>(SchedulerSettingsHelper.CreateSchedulerSettings(null), SchedulerObject.FetchAppointments, SchedulerObject.Resources);
                 if (list != null && list.Length > 0)
                 {
@@ -96,7 +103,7 @@ namespace EDKMO.Web.Controllers
                 }
             }
 
-            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject());
+            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds()));
         }
 
         public async Task<JsonResult> SaveEvent(EventDTO model)
@@ -175,6 +182,8 @@ namespace EDKMO.Web.Controllers
             settings.Views.DayView.DayCount = 1;
             settings.GroupType = SchedulerGroupType.Resource;
 
+
+
             settings.OptionsCustomization.AllowAppointmentCreate = UsedAppointmentType.None;
             settings.OptionsCustomization.AllowAppointmentEdit = UsedAppointmentType.None;
             settings.OptionsCustomization.AllowInplaceEditor = UsedAppointmentType.None;
@@ -197,6 +206,7 @@ namespace EDKMO.Web.Controllers
             settings.ClientSideEvents.BeginCallback = "OnBeginCallback";
             settings.ClientSideEvents.Init = "schedulerInit";
             settings.ClientSideEvents.AppointmentDoubleClick = "OnAppointmentDoubleClick";
+            settings.ClientSideEvents.EndCallback = "schedulerEndCallback";
 
             IEventService eventServie = DependencyResolver.Current.GetService<IEventService>();
             IUsers userService = DependencyResolver.Current.GetService<IUsers>();
@@ -206,8 +216,6 @@ namespace EDKMO.Web.Controllers
                 EventDTO e = eventServie.Get(c.AppointmentViewInfo.Appointment.Id);
                 System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerAppView, e);
             });
-
-            settings.ClientSideEvents.EndCallback = "schedulerEndCallback";
 
             settings.Views.WorkWeekView.SetVerticalAppointmentTemplateContent(c =>
             {
@@ -227,6 +235,18 @@ namespace EDKMO.Web.Controllers
             {
                 System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerResourceHeader, new Tuple<byte, string>((byte)c.Resource.Id, c.Resource.Caption));
             });
+
+            settings.PreRender = (s, e) =>
+            {
+                MVCxScheduler scheduler = (MVCxScheduler)s;
+                scheduler.ResourceNavigator.Visibility = ResourceNavigatorVisibility.Never;
+            };
+
+            settings.BeforeExecuteCallbackCommand = (s, e) =>
+            {
+                MVCxScheduler scheduler = (MVCxScheduler)s;
+                scheduler.ResourceNavigator.Visibility = ResourceNavigatorVisibility.Never;
+            };
 
             return settings;
         }

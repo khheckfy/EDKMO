@@ -45,7 +45,7 @@ namespace EDKMO.Web.Controllers
             
             model.Users = await UsersService.ListActive();
             model.Territory = await TerritoriesService.Get(territoryId);
-
+            ViewBag.Resources = model.Users;
             model.Event.TerritoryId = territoryId;
             model.Event.StartDate = DateTime.Parse(d);
             model.Event.EventDuration = new TimeSpan(0, 30, 0);

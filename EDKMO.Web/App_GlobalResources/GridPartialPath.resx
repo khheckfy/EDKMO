@@ -165,4 +165,7 @@
   <data name="UsersAdd" xml:space="preserve">
     <value>~/Areas/Manage/Views/Users/_gridAdd.cshtml</value>
   </data>
+  <data name="UsersDropDown" xml:space="preserve">
+    <value>~/Views/Partials/_schedullerViewResources.cshtml</value>
+  </data>
 </root>

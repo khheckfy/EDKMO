@@ -2,18 +2,16 @@
 
 @{
     string desc = string
-        .Format("<span class=\"fa fa-{6}\"></span> {0} {1}-{2} <br />{5} <br />{3}<br />{4}",
+        .Format("{0} {1}-{2} {5} {3} {4}",
         Model.EventTypeName,
-        Model.StartDate.ToString(@"HH:mm"),
-        Model.EndDate.ToString(@"HH:mm"),
+        Model.StartDate.AddHours(Model.UTCHours).ToString(@"HH:mm"),
+        Model.EndDate.AddHours(Model.UTCHours).ToString(@"HH:mm"),
         Model.ShortDescription,
         Model.LongDescription,
-        Model.EventName,
-        Model.FaIcon
-        );
+        Model.EventName);
 }
-<div style="background-color:@Model.EventColor; border-round:3px;" data-placement="top" data-html="true" title="@desc" data-toggle="tooltip">
-    <span data-placement="top" data-html="true" title="@desc" data-toggle="tooltip" class="badge badge-light"><span class="fa fa-@Model.FaIcon"></span> @Model.EventTypeName</span>
+<div style="background-color:@Model.EventColor; border-round:3px;">
+    <span title="@desc" class="badge badge-light"><span class="fa fa-@Model.FaIcon"></span> @Model.EventTypeName</span>
     @if (!string.IsNullOrEmpty(@Model.EventName))
     {
         if (Model.ReportMoId.HasValue)
@@ -25,6 +23,6 @@
             <span class="text-dark">@Model.EventName</span>
         }
     }
-    <span class="badge badge-primary">@Model.StartDate.ToString(@"HH:mm")-@Model.EndDate.ToString(@"HH:mm")</span><br />
+    <span class="badge badge-primary">@Model.StartDate.AddHours(Model.UTCHours).ToString(@"HH:mm")-@Model.EndDate.AddHours(Model.UTCHours).ToString(@"HH:mm")</span><br />
 
 </div>

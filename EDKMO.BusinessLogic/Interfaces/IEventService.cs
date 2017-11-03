@@ -12,7 +12,7 @@ namespace EDKMO.BusinessLogic.Interfaces
         EventDTO Get(object id);
         Task<EventCreateResult> CreateEvent(EventDTO evnt);
         Task<List<EventDTO>> ListByDate(DateTime date, byte? territoryId = null, byte? userId = null);
-        Task<SchedulerDataObject> ScheduleObject();
+        Task<SchedulerDataObject> ScheduleObject(List<byte> resources);
         Task Remove(int id);
         Task<EventCreateResult> CreateBlockEvent(EventDTO evnt);
     }

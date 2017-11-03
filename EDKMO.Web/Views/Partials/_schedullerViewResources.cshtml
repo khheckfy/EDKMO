@@ -1,0 +1,105 @@
+﻿<script type="text/javascript">
+    var textSeparator = ";";
+    function OnListBoxSelectionChanged(listBox, args) {
+        if (args.index == 0)
+            args.isSelected ? listBox.SelectAll() : listBox.UnselectAll();
+        UpdateSelectAllItemState();
+        UpdateText();
+    }
+    function UpdateSelectAllItemState() {
+        IsAllSelected() ? checkListBox.SelectIndices([0]) : checkListBox.UnselectIndices([0]);
+    }
+    function IsAllSelected() {
+        for (var i = 1; i < checkListBox.GetItemCount(); i++)
+            if (!checkListBox.GetItem(i).selected)
+                return false;
+        return true;
+    }
+    function UpdateText() {
+        var selectedItems = checkListBox.GetSelectedItems();
+        checkComboBox.SetText(GetSelectedItemsText(selectedItems));
+        scheduler.Refresh();
+    }
+    function SynchronizeListBoxValues(dropDown, args) {
+        checkListBox.UnselectAll();
+        var texts = dropDown.GetText().split(textSeparator);
+        var values = GetValuesByTexts(texts);
+        checkListBox.SelectValues(values);
+        UpdateSelectAllItemState();
+        UpdateText(); // for remove non-existing texts
+    }
+    function GetSelectedItemsText(items) {
+        var texts = [];
+        for (var i = 0; i < items.length; i++)
+            if (items[i].index != 0)
+                texts.push(items[i].text);
+        return texts.join(textSeparator);
+    }
+    function GetValuesByTexts(texts) {
+        var actualValues = [];
+        var item;
+        for (var i = 0; i < texts.length; i++) {
+            item = checkListBox.FindItemByText(texts[i]);
+            if (item != null)
+                actualValues.push(item.value);
+        }
+        return actualValues;
+    }
+
+    function OnListBoxInit(s, e) {
+        s.InsertItem(0, 'Все', null);
+    }
+</script>
+
+@using System.Web.UI.WebControls;
+@using System.Drawing;
+@model List<EDKMO.BusinessLogic.DTO.UserDTO>
+
+@Html.DevExpress().DropDownEdit(
+    settings =>
+    {
+        settings.Name = "checkComboBox";
+        settings.Width = 400;
+        settings.Properties.DropDownWindowStyle.BackColor = Color.FromArgb(0xEDEDED);
+
+        settings.SetDropDownWindowTemplateContent(c =>
+        {
+            @Html.DevExpress().ListBox(
+                listBoxSettings =>
+                {
+                    listBoxSettings.Name = "checkListBox";
+                    listBoxSettings.ControlStyle.Border.BorderWidth = 0;
+                    listBoxSettings.ControlStyle.BorderBottom.BorderWidth = 1;
+                    listBoxSettings.ControlStyle.BorderBottom.BorderColor = Color.FromArgb(0xDCDCDC);
+                    listBoxSettings.Height = Unit.Pixel(170);
+                    listBoxSettings.Width = Unit.Percentage(100);
+                    listBoxSettings.Properties.TextField = "LastName";
+                    listBoxSettings.Properties.ValueField = "UserId";
+                    listBoxSettings.Properties.ValueType = typeof(byte);
+                    listBoxSettings.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+
+                    listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "OnListBoxSelectionChanged";
+                    listBoxSettings.Properties.ClientSideEvents.Init = "OnListBoxInit";
+                }
+            )
+            .BindList(Model)
+            .Render();
+            ViewContext.Writer.Write("<div style=\"margin: 6px; overflow: hidden;\">");
+            @Html.DevExpress().Button(
+                buttonSettings =>
+                {
+                    buttonSettings.Name = "buttonClose";
+                    buttonSettings.Text = "ОК";
+                    buttonSettings.Style.Add("float", "right");
+                    buttonSettings.ClientSideEvents.Click = "function(s, e){ checkComboBox.HideDropDown(); }";
+                    buttonSettings.Height = 26;
+                }
+            )
+            .Render();
+            ViewContext.Writer.Write("</div>");
+        });
+        settings.Properties.AnimationType = AnimationType.None;
+        settings.Properties.ClientSideEvents.TextChanged = "SynchronizeListBoxValues";
+        settings.Properties.ClientSideEvents.DropDown = "SynchronizeListBoxValues";
+    }
+).GetHtml()

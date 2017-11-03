@@ -47,7 +47,8 @@ namespace EDKMO.BusinessLogic.Services
                        StartDate = e.StartDate,
                        UserId = e.UserId,
                        TerritoryId = e.TerritoryId,
-                       ROUrl = e.Territory.ServerPath
+                       ROUrl = e.Territory.ServerPath,
+                       UTCHours = e.User.Territory.UTCHours
                    }).FirstOrDefault();
 
             return dto;
@@ -99,13 +100,19 @@ namespace EDKMO.BusinessLogic.Services
             return query.ToList();
         }
 
-        public async Task<SchedulerDataObject> ScheduleObject()
+        public async Task<SchedulerDataObject> ScheduleObject(List<byte> resources)
         {
-            await Task.FromResult(0);
+            var resList = await DB
+                .UserRepository
+                .Query()
+                .ToListAsync();
+
+            if (resources.Count > 0)
+                resList = resList.Where(n => resources.Contains(n.UserId)).ToList();
 
             return new SchedulerDataObject()
             {
-                Resources = DB.UserRepository.Query().ToList(),
+                Resources = resList,
                 FetchAppointments = FetchAppointmentsHelperMethod
             };
         }

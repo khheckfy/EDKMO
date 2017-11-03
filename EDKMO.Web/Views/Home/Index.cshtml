@@ -22,6 +22,7 @@
                 e.customArgs["deleteIds"] = JSON.stringify(deleteIds);
                 deleteIds = null;
             }
+            e.customArgs['SelectedResources'] = checkListBox.GetSelectedValues().join(',');
         }
 
         function schedulerEndCallback(s, e) {
@@ -137,6 +138,7 @@
     </script>
 }
 
+@Html.Partial(Resources.GridPartialPath.UsersDropDown, Model.Users)
 @Html.Partial(Resources.GridPartialPath.Scheduller, Model.SchedulerObject)
 
 <div id="eventForm"></div>
