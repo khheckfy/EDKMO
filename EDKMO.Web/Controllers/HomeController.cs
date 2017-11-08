@@ -177,8 +177,8 @@ namespace EDKMO.Web.Controllers
             settings.Views.TimelineView.Enabled = false;
             settings.Views.WorkWeekView.Enabled = true;
             settings.Width = Unit.Percentage(100);
-            settings.Views.DayView.Styles.ScrollAreaHeight = 400;
-            settings.Views.WorkWeekView.Styles.ScrollAreaHeight = 400;
+            settings.Views.DayView.Styles.ScrollAreaHeight = 700;
+            settings.Views.WorkWeekView.Styles.ScrollAreaHeight = 700;
             settings.Views.DayView.DayCount = 1;
             settings.GroupType = SchedulerGroupType.Resource;
 
@@ -191,11 +191,11 @@ namespace EDKMO.Web.Controllers
             var wt = new TimeOfDayInterval(TimeSpan.FromHours(9), TimeSpan.FromHours(18));
             settings.Views.DayView.WorkTime = wt;
             settings.Views.DayView.ShowWorkTimeOnly = true;
-            settings.Views.DayView.TimeScale = TimeSpan.FromMinutes(30);
+            settings.Views.DayView.TimeScale = TimeSpan.FromMinutes(15);
 
             settings.Views.WorkWeekView.ShowWorkTimeOnly = true;
             settings.Views.WorkWeekView.WorkTime = wt;
-            settings.Views.WorkWeekView.TimeScale = TimeSpan.FromMinutes(30);
+            settings.Views.WorkWeekView.TimeScale = TimeSpan.FromMinutes(15);
 
             settings.Storage.Appointments.Assign(SchedulerDemoHelper.DefaultAppointmentStorage);
             settings.Storage.Resources.Assign(SchedulerDemoHelper.DefaultResourceStorage);
