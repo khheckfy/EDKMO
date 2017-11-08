@@ -10,7 +10,7 @@
         IsAllSelected() ? checkListBox.SelectIndices([0]) : checkListBox.UnselectIndices([0]);
     }
     function IsAllSelected() {
-        for (var i = 1; i < checkListBox.GetItemCount(); i++)
+        for (var i = 1; i < checkListBox.GetItemCount() ; i++)
             if (!checkListBox.GetItem(i).selected)
                 return false;
         return true;
@@ -54,8 +54,9 @@
 @using System.Web.UI.WebControls;
 @using System.Drawing;
 @model List<EDKMO.BusinessLogic.DTO.UserDTO>
-
-@Html.DevExpress().DropDownEdit(
+<div class="row">
+    <div class="col-md-10">
+        @Html.DevExpress().DropDownEdit(
     settings =>
     {
         settings.Name = "checkComboBox";
@@ -103,3 +104,8 @@
         settings.Properties.ClientSideEvents.DropDown = "SynchronizeListBoxValues";
     }
 ).GetHtml()
+    </div>
+    <div class="col-md-2 text-right">
+        <a href="#" onclick="scheduler.Refresh()" class="fa fa-refresh text-success"></a>
+    </div>
+</div>
