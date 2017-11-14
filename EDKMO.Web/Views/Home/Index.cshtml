@@ -97,7 +97,7 @@
 
         function SendForm() {
             NProgress.set(0.4);
-           
+
             var fd = new FormData();
 
             fd.append('UserId', $('[name="UserId"]').val());
@@ -130,7 +130,7 @@
             var url = '@Url.Action("EventBlockForm", "Home")';
             url += '?userId=' + id;
             url += '&userName=' + name;
-            $('#eventForm').load(url, function () {
+            $('#eventForm').load(encodeURI(url), function () {
                 $('.modal').modal('show');
                 NProgress.done();
             });
