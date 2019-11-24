@@ -17,6 +17,7 @@ namespace EDKMO.BusinessLogic.Services
     public class EventService : IEventService
     {
         IUnitOfWork DB;
+        private bool IsClient { set; get; }
 
         public EventService(IUnitOfWork db)
         {
@@ -81,12 +82,13 @@ namespace EDKMO.BusinessLogic.Services
 
             var query = from e in DB.EventRepository.Query()
                         where
-                        e.StartDate >= dFrom && e.EndDate <= dTo
+                        IsClient == false && e.StartDate >= dFrom && e.EndDate <= dTo ||
+                        IsClient == true && e.ClientStartDate >= dFrom && e.ClientEndDate <= dTo
                         select new
                         {
                             e.AccountId,
-                            EndDate = DbFunctions.AddHours(e.EndDate, e.User.Territory.UTCHours),
-                            StartDate = DbFunctions.AddHours(e.StartDate, e.User.Territory.UTCHours),
+                            EndDate = DbFunctions.AddHours(IsClient == false ? e.EndDate : e.ClientEndDate, e.User.Territory.UTCHours),
+                            StartDate = DbFunctions.AddHours(IsClient == false ? e.StartDate : e.ClientStartDate, e.User.Territory.UTCHours),
                             e.EventId,
                             e.EventName,
                             e.LongDescription,
@@ -100,7 +102,7 @@ namespace EDKMO.BusinessLogic.Services
             return query.ToList();
         }
 
-        public async Task<SchedulerDataObject> ScheduleObject(List<byte> resources)
+        public async Task<SchedulerDataObject> ScheduleObject(List<byte> resources, bool isClientTime)
         {
             var resList = await DB
                 .UserRepository
@@ -110,6 +112,7 @@ namespace EDKMO.BusinessLogic.Services
             if (resources.Count > 0)
                 resList = resList.Where(n => resources.Contains(n.UserId)).ToList();
 
+            IsClient = isClientTime;
             return new SchedulerDataObject()
             {
                 Resources = resList,
@@ -299,22 +302,28 @@ namespace EDKMO.BusinessLogic.Services
 
             try
             {
-                User user = await DB.UserRepository.FindByIdAsync(evnt.UserId);
-                Territory territory = await DB.TerritoryRepository.FindByIdAsync(user.TerritoryId);
+                var user = await DB.UserRepository.FindByIdAsync(evnt.UserId);
+                var territory = await DB.TerritoryRepository.FindByIdAsync(user.TerritoryId);
 
                 //Надо перевести время во врмея пользователя по его территории
                 evnt.StartDate = evnt.StartDate.AddHours((-1) * territory.UTCHours);
                 evnt.EndDate = evnt.EndDate.AddHours((-1) * territory.UTCHours);
 
-                DateTime date = evnt.StartDate.Date;
+                evnt.ClientStartDate = evnt.ClientStartDate.AddHours((-1) * territory.UTCHours);
+                evnt.ClientEndDate = evnt.ClientEndDate.AddHours((-1) * territory.UTCHours);
+
+                var date = evnt.StartDate.Date;
                 while (date <= evnt.EndDate.Date)
                 {
-                    Event obj = new Event()
+                    var obj = new Event()
                     {
                         CreatedOn = DateTime.Now,
 
                         EndDate = date.Add(evnt.EndDate.TimeOfDay),
                         StartDate = date.Add(evnt.StartDate.TimeOfDay),
+
+                        ClientEndDate = date.Add(evnt.ClientEndDate.TimeOfDay),
+                        ClientStartDate = date.Add(evnt.ClientStartDate.TimeOfDay),
 
                         EventTypeId = evnt.EventTypeId,
                         LongDescription = evnt.LongDescription,

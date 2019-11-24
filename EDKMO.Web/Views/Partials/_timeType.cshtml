@@ -1,0 +1,13 @@
+﻿@Html.DevExpress().RadioButtonList(settings =>
+{
+    settings.Name = "rbtnTime";
+    settings.Properties.ValueField = "Value";
+    settings.Properties.TextField = "Text";
+    settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+    settings.Properties.RepeatColumns = 2;
+    settings.SelectedIndex = 0;
+    settings.Properties.ClientSideEvents.ValueChanged = "OnListBoxSelectionChanged";
+}).BindList(new List<object> {
+                new { Text = "Пользователя", Value = "1" },
+                new { Text = "Клиента", Value = "2" }
+            }).GetHtml()

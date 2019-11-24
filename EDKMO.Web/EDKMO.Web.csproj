@@ -328,6 +328,7 @@
     <Content Include="Views\Home\EventBlockForm.cshtml" />
     <Content Include="Views\Partials\ResourceViewPartial.cshtml" />
     <Content Include="Views\Partials\_schedullerViewResources.cshtml" />
+    <Content Include="Views\Partials\_timeType.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

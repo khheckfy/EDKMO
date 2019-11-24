@@ -23,6 +23,7 @@
                 deleteIds = null;
             }
             e.customArgs['SelectedResources'] = checkListBox.GetSelectedValues().join(',');
+            e.customArgs['time'] = rbtnTime.GetValue();
         }
 
         function schedulerEndCallback(s, e) {
@@ -108,6 +109,10 @@
             fd.append('TimeTo', $('[name="TimeTo"]').val());
             fd.append('ShortDesc', $('[name="ShortDesc"]').val());
             fd.append('LongDesc', $('[name="LongDesc"]').val());
+            fd.append('ClientDateEnd', $('[name="ClientDateEnd"]').val());
+            fd.append('ClientTimeFrom', $('[name="ClientTimeFrom"]').val());
+            fd.append('ClientDateStart', $('[name="ClientDateStart"]').val());
+            fd.append('ClientTimeTo', $('[name="ClientTimeTo"]').val());
 
             $.ajax({
                 url: '@Url.Action("CreateEventBlock", "Home")',
@@ -138,7 +143,17 @@
     </script>
 }
 
-@Html.Partial(Resources.GridPartialPath.UsersDropDown, Model.Users)
+<table>
+    <tr>
+        <td>
+            @Html.Partial(Resources.GridPartialPath.UsersDropDown, Model.Users)
+        </td>
+        <td>Показывать время</td>
+        <td>
+         @Html.Partial(Resources.GridPartialPath.TimeType, Model.Users)
+        </td>
+    </tr>
+</table>
 @Html.Partial(Resources.GridPartialPath.Scheduller, Model.SchedulerObject)
 
 <div id="eventForm"></div>

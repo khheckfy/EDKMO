@@ -33,5 +33,7 @@ namespace EDKMO.Domain.Entities
         public virtual EventType EventType { set; get; }
         public virtual Territory Territory { set; get; }
 
+        public DateTime ClientStartDate { set; get; }
+        public DateTime ClientEndDate { set; get; }
     }
 }

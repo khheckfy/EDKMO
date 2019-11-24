@@ -178,6 +178,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~/Views/Partials/_timeType.cshtml.
+        /// </summary>
+        internal static string TimeType {
+            get {
+                return ResourceManager.GetString("TimeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ~/Areas/Manage/Views/Users/_gridButtons.cshtml.
         /// </summary>
         internal static string UserButtons {

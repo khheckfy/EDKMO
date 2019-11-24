@@ -156,6 +156,9 @@
   <data name="TerritoryButtons" xml:space="preserve">
     <value>~/Areas/Manage/Views/Territories/_gridButtons.cshtml</value>
   </data>
+  <data name="TimeType" xml:space="preserve">
+    <value>~/Views/Partials/_timeType.cshtml</value>
+  </data>
   <data name="UserButtons" xml:space="preserve">
     <value>~/Areas/Manage/Views/Users/_gridButtons.cshtml</value>
   </data>

@@ -1,11 +1,9 @@
-﻿using DevExpress.Web.ASPxScheduler;
-using DevExpress.Web.Mvc;
+﻿using DevExpress.Web.Mvc;
 using DevExpress.XtraScheduler;
 using EDKMO.BusinessLogic.DTO;
 using EDKMO.BusinessLogic.Interfaces;
 using EDKMO.Web.Models;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -21,6 +19,15 @@ namespace EDKMO.Web.Controllers
         IEventService EventService;
         IEventTypeService EventTypeService;
 
+        private bool IsClientTime
+        {
+            get
+            {
+                var t = Request.Params.AllKeys.Any(x => x.Equals("time")) ? Request.Params["time"] : "1";
+                return int.Parse(t).Equals(2);
+            }
+        }
+
         public HomeController(IUsers userService, IEventService eventService, IEventTypeService eventTypeService)
         {
             UserService = userService;
@@ -33,14 +40,14 @@ namespace EDKMO.Web.Controllers
         {
             HomeModel model = new HomeModel();
             model.Users = await UserService.ListActive();
-            model.SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds());
+            model.SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds(), IsClientTime);
 
             return View(model);
         }
 
         public async Task<ActionResult> OverviewPartial()
         {
-            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds()));
+            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds(), IsClientTime));
         }
 
         List<byte> GetSelectedResourceIds()
@@ -70,7 +77,11 @@ namespace EDKMO.Web.Controllers
         {
             model.DateStart = model.DateStart.Add(model.TimeFrom);
             model.DateEnd = model.DateEnd.Add(model.TimeTo);
-            await EventService.CreateBlockEvent(new EventDTO()
+
+            model.ClientDateStart = model.ClientDateStart.Add(model.ClientTimeFrom);
+            model.ClientDateEnd = model.ClientDateEnd.Add(model.ClientTimeTo);
+
+            await EventService.CreateBlockEvent(new EventDTO
             {
                 EndDate = model.DateEnd,
                 StartDate = model.DateStart,
@@ -79,6 +90,8 @@ namespace EDKMO.Web.Controllers
                 IsMainEvent = true,
                 LongDescription = model.LongDesc,
                 ShortDescription = model.ShortDesc,
+                ClientEndDate = model.ClientDateEnd,
+                ClientStartDate = model.ClientDateStart,
             });
             return Json(0);
         }
@@ -94,7 +107,7 @@ namespace EDKMO.Web.Controllers
             }
             else
             {
-                var SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds());
+                var SchedulerObject = await EventService.ScheduleObject(GetSelectedResourceIds(), IsClientTime);
                 var list = SchedulerExtension.GetAppointmentsToUpdate<EventDTO>(SchedulerSettingsHelper.CreateSchedulerSettings(null), SchedulerObject.FetchAppointments, SchedulerObject.Resources);
                 if (list != null && list.Length > 0)
                 {
@@ -103,7 +116,7 @@ namespace EDKMO.Web.Controllers
                 }
             }
 
-            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds()));
+            return PartialView(Resources.GridPartialPath.Scheduller, await EventService.ScheduleObject(GetSelectedResourceIds(), IsClientTime));
         }
 
         public async Task<JsonResult> SaveEvent(EventDTO model)

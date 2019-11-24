@@ -8,6 +8,8 @@ namespace EDKMO.BusinessLogic.DTO
 
         public DateTime StartDate { set; get; }
         public DateTime EndDate { set; get; }
+        public DateTime ClientStartDate { set; get; }
+        public DateTime ClientEndDate { set; get; }
         public DateTime CreatedOn { set; get; }
 
         public string RefEventName { set; get; }
