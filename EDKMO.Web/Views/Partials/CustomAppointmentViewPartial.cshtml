@@ -2,13 +2,14 @@
 
 @{
     string desc = string
-        .Format("{0} {1}-{2} {5} {3} {4}",
+        .Format("{0} {1}-{2} {5} {3} {4} {5}",
         Model.EventTypeName,
         Model.StartDate.AddHours(Model.UTCHours).ToString(@"HH:mm"),
         Model.EndDate.AddHours(Model.UTCHours).ToString(@"HH:mm"),
         Model.ShortDescription,
         Model.LongDescription,
-        Model.EventName);
+        Model.EventName,
+        Model.RoIdName);
 }
 <div style="background-color:@Model.EventColor; border-round:3px;">
     <span title="@desc" class="badge badge-light"><span class="fa fa-@Model.FaIcon"></span> @Model.EventTypeName</span>
@@ -23,6 +24,6 @@
             <span class="text-dark">@Model.EventName</span>
         }
     }
-    <span class="badge badge-primary">@Model.StartDate.AddHours(Model.UTCHours).ToString(@"HH:mm")-@Model.EndDate.AddHours(Model.UTCHours).ToString(@"HH:mm")</span><br />
+    <span class="badge badge-primary">@Model.RoIdName @Model.StartDate.AddHours(Model.UTCHours).ToString(@"HH:mm")-@Model.EndDate.AddHours(Model.UTCHours).ToString(@"HH:mm")</span><br />
 
 </div>

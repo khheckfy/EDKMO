@@ -35,5 +35,6 @@ namespace EDKMO.Domain.Entities
 
         public DateTime ClientStartDate { set; get; }
         public DateTime ClientEndDate { set; get; }
+        public byte? RoId { set; get; }
     }
 }

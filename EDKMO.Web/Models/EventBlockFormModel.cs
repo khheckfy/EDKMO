@@ -17,8 +17,6 @@ namespace EDKMO.Web.Models
             UserId = userId;
             UserName = userName;
 
-            ClientDateEnd =
-            ClientDateStart =
             DateEnd =
             DateStart =
                 DateTime.Now.Date;
@@ -46,12 +44,10 @@ namespace EDKMO.Web.Models
         public TimeSpan TimeTo { set; get; }
 
         public List<EventTypeDTO> EventTypes { set; get; }
+        public List<TerritoryDTO> Ros { set; get; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
-        public DateTime ClientDateStart { set; get; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
-        public DateTime ClientDateEnd { set; get; }
         public TimeSpan ClientTimeFrom { set; get; }
         public TimeSpan ClientTimeTo { set; get; }
+        public byte RoId { set; get; }
     }
 }

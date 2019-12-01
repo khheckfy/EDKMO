@@ -109,10 +109,9 @@
             fd.append('TimeTo', $('[name="TimeTo"]').val());
             fd.append('ShortDesc', $('[name="ShortDesc"]').val());
             fd.append('LongDesc', $('[name="LongDesc"]').val());
-            fd.append('ClientDateEnd', $('[name="ClientDateEnd"]').val());
             fd.append('ClientTimeFrom', $('[name="ClientTimeFrom"]').val());
-            fd.append('ClientDateStart', $('[name="ClientDateStart"]').val());
             fd.append('ClientTimeTo', $('[name="ClientTimeTo"]').val());
+            fd.append('RoId', $('[name="RoId"]').val());
 
             $.ajax({
                 url: '@Url.Action("CreateEventBlock", "Home")',
@@ -143,14 +142,12 @@
     </script>
 }
 
+@Html.Partial(Resources.GridPartialPath.UsersDropDown, Model.Users)
 <table>
     <tr>
-        <td>
-            @Html.Partial(Resources.GridPartialPath.UsersDropDown, Model.Users)
-        </td>
         <td>Показывать время</td>
         <td>
-         @Html.Partial(Resources.GridPartialPath.TimeType, Model.Users)
+            @Html.Partial(Resources.GridPartialPath.TimeType, Model.Users)
         </td>
     </tr>
 </table>

@@ -18,6 +18,7 @@ namespace EDKMO.Web.Controllers
         IUsers UserService;
         IEventService EventService;
         IEventTypeService EventTypeService;
+        ITerritories TerritoriesService;
 
         private bool IsClientTime
         {
@@ -28,11 +29,12 @@ namespace EDKMO.Web.Controllers
             }
         }
 
-        public HomeController(IUsers userService, IEventService eventService, IEventTypeService eventTypeService)
+        public HomeController(IUsers userService, IEventService eventService, IEventTypeService eventTypeService, ITerritories roService)
         {
             UserService = userService;
             EventService = eventService;
             EventTypeService = eventTypeService;
+            TerritoriesService = roService;
         }
 
         // GET: Home
@@ -67,6 +69,7 @@ namespace EDKMO.Web.Controllers
             EventBlockFormModel model = new EventBlockFormModel(userId, userName);
 
             model.EventTypes = await EventTypeService.ListAll();
+            model.Ros = await TerritoriesService.GetAll();
             model.EventTypes = model.EventTypes.Where(n => n.IsRequiredReport == false).ToList();
 
             return PartialView(Resources.GridPartialPath.EventBlockForm, model);
@@ -78,8 +81,8 @@ namespace EDKMO.Web.Controllers
             model.DateStart = model.DateStart.Add(model.TimeFrom);
             model.DateEnd = model.DateEnd.Add(model.TimeTo);
 
-            model.ClientDateStart = model.ClientDateStart.Add(model.ClientTimeFrom);
-            model.ClientDateEnd = model.ClientDateEnd.Add(model.ClientTimeTo);
+            var ClientDateStart = model.DateStart.Date.Add(model.ClientTimeFrom);
+            var ClientDateEnd = model.DateEnd.Date.Add(model.ClientTimeTo);
 
             await EventService.CreateBlockEvent(new EventDTO
             {
@@ -90,8 +93,9 @@ namespace EDKMO.Web.Controllers
                 IsMainEvent = true,
                 LongDescription = model.LongDesc,
                 ShortDescription = model.ShortDesc,
-                ClientEndDate = model.ClientDateEnd,
-                ClientStartDate = model.ClientDateStart,
+                ClientEndDate = ClientDateEnd,
+                ClientStartDate = ClientDateStart,
+                RoId = model.RoId,
             });
             return Json(0);
         }
@@ -246,7 +250,9 @@ namespace EDKMO.Web.Controllers
 
             settings.SetHorizontalResourceHeaderTemplateContent(c =>
             {
-                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper, Resources.GridPartialPath.SchedulerResourceHeader, new Tuple<byte, string>((byte)c.Resource.Id, c.Resource.Caption));
+                System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(htmlHelper,
+                    Resources.GridPartialPath.SchedulerResourceHeader,
+                    new Tuple<byte, string>((byte)c.Resource.Id, c.Resource.Caption?.Substring(0, Math.Min(c.Resource.Caption.Length, 7))));
             });
 
             settings.PreRender = (s, e) =>

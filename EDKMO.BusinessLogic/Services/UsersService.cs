@@ -33,6 +33,10 @@ namespace EDKMO.BusinessLogic.Services
         public async Task<List<UserDTO>> ListActive()
         {
             var data = await DB.UserRepository.SelectActive();
+            data.ForEach(u =>
+            {
+                
+            });
             return Mapper.Map<List<User>, List<UserDTO>>(data);
         }
 

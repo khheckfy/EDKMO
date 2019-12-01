@@ -49,8 +49,14 @@ namespace EDKMO.BusinessLogic.Services
                        UserId = e.UserId,
                        TerritoryId = e.TerritoryId,
                        ROUrl = e.Territory.ServerPath,
-                       UTCHours = e.User.Territory.UTCHours
+                       UTCHours = e.User.Territory.UTCHours,
+                       RoId = e.RoId,
                    }).FirstOrDefault();
+
+            if (dto.RoId.HasValue)
+            {
+                dto.RoIdName = DB.TerritoryRepository.FindById(dto.RoId.Value)?.Name;
+            }
 
             return dto;
         }
@@ -96,7 +102,8 @@ namespace EDKMO.BusinessLogic.Services
                             e.ReportMoId,
                             e.TerritoryId,
                             e.UserId,
-                            e.User.Territory.UTCHours
+                            e.User.Territory.UTCHours,
+                            e.RoId,
                         };
 
             return query.ToList();
@@ -185,7 +192,8 @@ namespace EDKMO.BusinessLogic.Services
                     StartDate = evnt.StartDate,
                     TerritoryId = evnt.TerritoryId,
                     UserId = evnt.UserId,
-                    IsMainEvent = true
+                    IsMainEvent = true,
+                    RoId = evnt.RoId,
                 };
 
                 //Приводим все к гринвичу
@@ -227,7 +235,8 @@ namespace EDKMO.BusinessLogic.Services
                         EventTypeId = road.EventTypeId,
                         TerritoryId = evnt.TerritoryId,
                         UserId = evnt.UserId,
-                        IsMainEvent = false
+                        IsMainEvent = false,
+                        RoId = evnt.RoId,
                     });
 
                     tsFrom = roadStart.TimeOfDay;
@@ -262,7 +271,8 @@ namespace EDKMO.BusinessLogic.Services
                         EventTypeId = road.EventTypeId,
                         TerritoryId = evnt.TerritoryId,
                         UserId = evnt.UserId,
-                        IsMainEvent = false
+                        IsMainEvent = false,
+                        RoId = evnt.RoId,
                     });
 
                     tsFrom = roadStart.TimeOfDay;
@@ -330,7 +340,8 @@ namespace EDKMO.BusinessLogic.Services
                         ShortDescription = evnt.ShortDescription,
                         TerritoryId = user.TerritoryId,
                         UserId = evnt.UserId,
-                        IsMainEvent = true
+                        IsMainEvent = true,
+                        RoId = evnt.RoId,
                     };
 
                     DB.EventRepository.Add(obj);
